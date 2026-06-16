@@ -163,7 +163,12 @@
     .btn-outline:hover { background: var(--blue-light); }
 
     /* ── SECTION ── */
-    .section { padding: 80px 24px; }
+    .section {
+      padding: 56px 24px;
+      min-height: 100vh;
+      display: flex; align-items: center;
+    }
+    .section > * { width: 100%; }
     .section-blue { background: var(--blue-light); }
     .section-white { background: white; }
     .container { max-width: 1320px; margin: 0 auto; }
@@ -201,7 +206,9 @@
 
     /* ── HERO ── */
     .hero {
-      padding: 64px 24px 80px;
+      min-height: calc(100vh - 162px);
+      display: flex; align-items: center;
+      padding: 48px 24px 56px;
       overflow: hidden; position: relative;
       background: #FBF4E4;
     }
@@ -225,10 +232,10 @@
     }
 
     .hero-inner {
-      max-width: 1320px; margin: 0 auto;
+      width: 100%; max-width: 1320px; margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 540px;
-      gap: 56px; align-items: start;
+      gap: 56px; align-items: center;
       position: relative; z-index: 1;
     }
 
@@ -400,7 +407,8 @@
     .chat-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(169,128,58,.45); }
 
     /* ── SEARCH ── */
-    .search-block { padding: 64px 24px; background: var(--blue-light); }
+    .search-block { padding: 56px 24px; background: var(--blue-light); min-height: 100vh; display: flex; align-items: center; }
+    .search-block > * { width: 100%; }
     .search-block .container { text-align: center; }
     .search-frame {
       background: white; border-radius: var(--radius);
