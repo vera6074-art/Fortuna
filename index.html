@@ -3,25 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TravelAI — Подбор туров с помощью искусственного интеллекта</title>
+  <title>Фортуна AI — Подбор туров с помощью искусственного интеллекта</title>
   <meta name="description" content="Подберите идеальный отдых за 1 минуту с помощью ИИ-помощника. Турция, Египет, ОАЭ, Мальдивы и другие направления по лучшим ценам." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --blue: #1976D2;
-      --blue-dark: #1565C0;
-      --blue-light: #EAF6FF;
-      --blue-mid: #BBDEFB;
+      /* Fortuna brand palette: bronze-gold + turquoise wave */
+      --blue: #A9803A;          /* primary bronze-gold (accents, buttons) */
+      --blue-dark: #876226;     /* darker bronze */
+      --blue-light: #FBF4E6;    /* warm cream backing */
+      --blue-mid: #E3CC98;      /* soft gold border */
+      --gold-1: #D9B45A;        /* gradient gold start */
+      --gold-2: #A9803A;        /* gradient gold mid */
+      --gold-3: #7E5B22;        /* gradient gold end */
+      --wave: #2BA6CE;          /* turquoise wave accent */
+      --wave-dark: #1B7FA3;
+      --wave-light: #E6F5FA;
       --text: #222222;
-      --text-muted: #6B7280;
+      --text-muted: #7A6F5C;
       --white: #ffffff;
       --radius: 16px;
-      --shadow: 0 4px 24px rgba(25, 118, 210, 0.12);
-      --shadow-card: 0 2px 16px rgba(0,0,0,0.07);
+      --shadow: 0 4px 24px rgba(169, 128, 58, 0.16);
+      --shadow-card: 0 2px 16px rgba(120, 91, 34, 0.10);
+      --gold-grad: linear-gradient(135deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
     }
 
     html { scroll-behavior: smooth; }
@@ -44,7 +52,7 @@
       z-index: 200;
       background: rgba(255,255,255,0.97);
       backdrop-filter: blur(14px);
-      border-bottom: 1px solid #E3F0FF;
+      border-bottom: 1px solid #F0E6CE;
     }
 
     .header-inner {
@@ -60,23 +68,35 @@
     .logo {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      font-size: 22px;
-      letter-spacing: -0.4px;
+      gap: 11px;
       flex-shrink: 0;
       color: var(--text);
     }
 
     .logo-icon {
-      width: 40px; height: 40px;
-      background: var(--blue);
-      border-radius: 11px;
+      width: 44px; height: 44px;
+      flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
     }
+    .logo-icon svg { width: 44px; height: 44px; display: block; }
 
-    .logo em { color: var(--blue); font-style: normal; }
+    .logo-text {
+      display: flex; flex-direction: column;
+      line-height: 1;
+    }
+    .logo-sub {
+      font-size: 9px; font-weight: 600; letter-spacing: 3px;
+      color: var(--text-muted); text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .logo-name {
+      font-size: 24px; font-weight: 800; letter-spacing: 1px;
+      background: var(--gold-grad);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+    .logo em { font-style: normal; color: var(--wave); }
 
     .hd-contacts {
       flex: 1;
@@ -101,10 +121,11 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 14px;
     }
-    .ic-phone { background: #E8F5E9; }
-    .ic-wa    { background: #E8F5E9; }
-    .ic-tg    { background: #E3F2FD; }
-    .ic-time  { background: var(--blue-light); }
+    .hd-ic svg { width: 15px; height: 15px; }
+    .ic-phone { background: var(--wave-light); color: var(--wave-dark); }
+    .ic-wa    { background: #E8F5E9; color: #2E7D32; }
+    .ic-tg    { background: var(--wave-light); color: var(--wave-dark); }
+    .ic-time  { background: var(--blue-light); color: var(--blue-dark); }
 
     .hd-sep { width: 1px; height: 22px; background: #E5E7EB; }
 
@@ -133,8 +154,8 @@
 
     /* ── TRUST BAR ── */
     .trust-bar {
-      background: #F5FBFF;
-      border-bottom: 1px solid #E3F0FF;
+      background: #FBF7EE;
+      border-bottom: 1px solid #F0E6CE;
       padding: 11px 24px;
     }
     .trust-bar-in {
@@ -153,12 +174,12 @@
       transition: all .22s;
     }
     .btn-primary {
-      background: var(--blue); color: white;
+      background: var(--gold-grad); color: white;
       border-radius: var(--radius);
       padding: 14px 28px; font-size: 16px;
-      box-shadow: 0 4px 16px rgba(25,118,210,.25);
+      box-shadow: 0 4px 16px rgba(169,128,58,.30);
     }
-    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(25,118,210,.35); }
+    .btn-primary:hover { filter: brightness(1.06); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(169,128,58,.42); }
     .btn-sm { padding: 10px 20px; font-size: 14px; border-radius: 12px; }
     .btn-outline {
       background: transparent; color: var(--blue);
@@ -191,7 +212,7 @@
 
     /* ── HERO ── */
     .hero {
-      background: linear-gradient(155deg, #F0F9FF 0%, white 65%);
+      background: linear-gradient(155deg, #FBF4E4 0%, #FDFAF3 45%, white 75%);
       padding: 64px 24px 80px;
       overflow: hidden; position: relative;
     }
@@ -199,7 +220,14 @@
       content: '';
       position: absolute; top: -80px; right: -80px;
       width: 480px; height: 480px;
-      background: radial-gradient(circle, rgba(25,118,210,.07) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(217,180,90,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; bottom: -120px; left: -100px;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(43,166,206,.08) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -212,8 +240,8 @@
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
-      color: #0D47A1; border-radius: 20px;
+      background: linear-gradient(135deg, #F6E8C4, #E3CC98);
+      color: #6E4F1C; border-radius: 20px;
       padding: 6px 16px; font-size: 13px; font-weight: 600;
       margin-bottom: 22px;
     }
@@ -239,14 +267,14 @@
     .ai-chat {
       background: white;
       border-radius: 24px;
-      box-shadow: 0 8px 48px rgba(25,118,210,.15), 0 2px 8px rgba(0,0,0,.06);
+      box-shadow: 0 8px 48px rgba(43,166,206,.18), 0 2px 8px rgba(0,0,0,.06);
       overflow: hidden;
       display: flex; flex-direction: column;
       position: relative; z-index: 1;
     }
 
     .chat-hd {
-      background: linear-gradient(135deg, var(--blue), #1565C0);
+      background: linear-gradient(135deg, var(--wave), var(--wave-dark));
       padding: 16px 20px;
       display: flex; align-items: center; gap: 12px;
     }
@@ -272,10 +300,10 @@
       min-height: 280px; max-height: 400px;
       overflow-y: auto; padding: 18px;
       display: flex; flex-direction: column; gap: 11px;
-      background: #F7FBFF;
+      background: #F4FBFD;
     }
     .chat-msgs::-webkit-scrollbar { width: 4px; }
-    .chat-msgs::-webkit-scrollbar-thumb { background: #BBDEFB; border-radius: 4px; }
+    .chat-msgs::-webkit-scrollbar-thumb { background: #B3E0EC; border-radius: 4px; }
 
     .msg { display: flex; gap: 8px; animation: fadeUp .3s ease; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
@@ -284,7 +312,7 @@
 
     .msg-ic {
       width: 32px; height: 32px; border-radius: 10px;
-      background: var(--blue);
+      background: linear-gradient(135deg, var(--wave), var(--wave-dark));
       display: flex; align-items: center; justify-content: center;
       font-size: 15px; flex-shrink: 0;
     }
@@ -299,7 +327,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,.06);
     }
     .msg-user .msg-bbl {
-      background: var(--blue); color: white;
+      background: var(--wave); color: white;
       border-bottom-right-radius: 4px;
     }
 
@@ -307,75 +335,75 @@
       display: flex; align-items: center; gap: 4px;
       padding: 14px 18px;
     }
-    .td { width: 7px; height: 7px; background: #90CAF9; border-radius: 50%; animation: bounce 1.2s infinite; }
+    .td { width: 7px; height: 7px; background: #7DCBDE; border-radius: 50%; animation: bounce 1.2s infinite; }
     .td:nth-child(2){animation-delay:.2s} .td:nth-child(3){animation-delay:.4s}
     @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
 
     .chat-opts {
-      padding: 0 16px 12px; background: #F7FBFF;
+      padding: 0 16px 12px; background: #F4FBFD;
       display: flex; flex-wrap: wrap; gap: 7px;
     }
     .chat-opt {
       padding: 8px 15px; border-radius: 20px;
-      border: 2px solid var(--blue-mid);
-      background: white; color: var(--blue);
+      border: 2px solid #B3E0EC;
+      background: white; color: var(--wave-dark);
       font-size: 13px; font-weight: 600;
       cursor: pointer; transition: all .18s; font-family: inherit;
     }
-    .chat-opt:hover { background: var(--blue); color: white; border-color: var(--blue); }
+    .chat-opt:hover { background: var(--wave); color: white; border-color: var(--wave); }
 
     .chat-inp-row {
       padding: 11px 14px; background: white;
-      border-top: 1px solid #E5F0FF;
+      border-top: 1px solid #E6F4F8;
       display: flex; gap: 8px; align-items: center;
     }
     .chat-inp {
-      flex: 1; border: 1.5px solid #DEEEFF;
+      flex: 1; border: 1.5px solid #D8EEF4;
       border-radius: 12px; padding: 10px 14px;
       font-size: 14px; outline: none;
       transition: border-color .2s; font-family: inherit;
     }
-    .chat-inp:focus { border-color: var(--blue); }
+    .chat-inp:focus { border-color: var(--wave); }
 
     .chat-sel {
-      flex: 1; border: 1.5px solid #DEEEFF;
+      flex: 1; border: 1.5px solid #D8EEF4;
       border-radius: 12px; padding: 10px 14px;
       font-size: 14px; outline: none; background: white;
       font-family: inherit; color: var(--text);
       transition: border-color .2s; cursor: pointer;
     }
-    .chat-sel:focus { border-color: var(--blue); }
+    .chat-sel:focus { border-color: var(--wave); }
 
     .chat-date {
-      flex: 1; border: 1.5px solid #DEEEFF;
+      flex: 1; border: 1.5px solid #D8EEF4;
       border-radius: 12px; padding: 10px 14px;
       font-size: 14px; outline: none;
       font-family: inherit; transition: border-color .2s;
     }
-    .chat-date:focus { border-color: var(--blue); }
+    .chat-date:focus { border-color: var(--wave); }
 
     .chat-send-btn {
       width: 40px; height: 40px; border-radius: 12px;
-      background: var(--blue); border: none; color: white;
+      background: var(--wave); border: none; color: white;
       cursor: pointer; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       transition: all .2s;
     }
-    .chat-send-btn:hover { background: var(--blue-dark); transform: scale(1.06); }
+    .chat-send-btn:hover { background: var(--wave-dark); transform: scale(1.06); }
 
     .chat-cta {
       padding: 12px 14px; background: white;
-      border-top: 1px solid #E5F0FF;
+      border-top: 1px solid #E6F4F8;
     }
     .chat-cta-btn {
       width: 100%; padding: 12px;
-      background: linear-gradient(135deg, var(--blue), #1565C0);
+      background: var(--gold-grad);
       color: white; border: none; border-radius: 12px;
       font-size: 14px; font-weight: 700;
       cursor: pointer; transition: all .2s; font-family: inherit;
       display: flex; align-items: center; justify-content: center; gap: 8px;
     }
-    .chat-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(25,118,210,.4); }
+    .chat-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(169,128,58,.45); }
 
     /* ── SEARCH ── */
     .search-block { padding: 64px 24px; background: var(--blue-light); }
@@ -402,13 +430,15 @@
       padding: 28px; box-shadow: var(--shadow-card);
       transition: all .25s; border: 1.5px solid transparent;
     }
-    .feat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #BBDEFB; }
+    .feat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--blue-mid); }
     .feat-ic {
-      width: 52px; height: 52px; border-radius: 14px;
-      background: var(--blue-light);
+      width: 54px; height: 54px; border-radius: 15px;
+      background: linear-gradient(135deg, #FBF1D8, var(--blue-light));
+      border: 1px solid #F0E2C0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px; margin-bottom: 18px;
+      color: var(--blue); margin-bottom: 18px;
     }
+    .feat-ic svg { width: 26px; height: 26px; }
     .feat-title { font-size: 17px; font-weight: 700; margin-bottom: 9px; }
     .feat-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
 
@@ -421,10 +451,10 @@
     .step { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
     .step-num {
       width: 58px; height: 58px; border-radius: 50%;
-      background: var(--blue); color: white;
+      background: var(--gold-grad); color: white;
       font-size: 22px; font-weight: 800;
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 18px; box-shadow: 0 6px 20px rgba(25,118,210,.28);
+      margin-bottom: 18px; box-shadow: 0 6px 20px rgba(169,128,58,.32);
       position: relative; z-index: 1;
     }
     .step-conn {
@@ -440,7 +470,7 @@
     /* ── TELEGRAM BOT ── */
     .tg-wrap { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
     .tg-block {
-      background: linear-gradient(135deg, #0D47A1, #1976D2 60%, #29B6F6 100%);
+      background: linear-gradient(135deg, #155E78, #1B7FA3 50%, #2BA6CE 100%);
       border-radius: 24px; padding: 60px 52px;
       display: grid; grid-template-columns: 1fr auto;
       gap: 40px; align-items: center;
@@ -488,7 +518,7 @@
       overflow: hidden; box-shadow: var(--shadow-card);
       transition: all .25s; border: 1.5px solid transparent;
     }
-    .tour-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #BBDEFB; }
+    .tour-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--blue-mid); }
     .tour-img { height: 188px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .tour-img-em { font-size: 72px; transition: transform .4s; }
     .tour-card:hover .tour-img-em { transform: scale(1.1); }
@@ -499,7 +529,7 @@
     .tour-name { font-size: 16px; font-weight: 700; margin-bottom: 9px; }
     .tour-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
     .tour-tag { font-size: 12px; color: var(--blue); background: var(--blue-light); padding: 4px 10px; border-radius: 7px; font-weight: 500; }
-    .tour-ft { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid #F0F6FF; }
+    .tour-ft { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid #F3ECDC; }
     .tour-from { font-size: 11px; color: var(--text-muted); }
     .tour-price { font-size: 22px; font-weight: 800; }
     .tour-price small { font-size: 13px; font-weight: 500; color: var(--text-muted); }
@@ -534,7 +564,7 @@
       padding: 26px; box-shadow: var(--shadow-card);
       transition: transform .25s; border: 1.5px solid transparent;
     }
-    .rev-card:hover { transform: translateY(-3px); border-color: #BBDEFB; }
+    .rev-card:hover { transform: translateY(-3px); border-color: var(--blue-mid); }
     .rev-stars { color: #FFB300; font-size: 18px; margin-bottom: 11px; }
     .rev-text { font-size: 15px; color: var(--text); line-height: 1.75; margin-bottom: 18px; font-style: italic; }
     .rev-author { display: flex; align-items: center; gap: 12px; }
@@ -544,8 +574,8 @@
 
     /* ── FAQ ── */
     .faq-list { display: flex; flex-direction: column; gap: 11px; margin-top: 40px; max-width: 820px; }
-    .faq-item { background: white; border-radius: var(--radius); border: 1.5px solid #E3F0FF; overflow: hidden; }
-    .faq-item.open { border-color: #BBDEFB; }
+    .faq-item { background: white; border-radius: var(--radius); border: 1.5px solid #F0E6CE; overflow: hidden; }
+    .faq-item.open { border-color: var(--blue-mid); }
     .faq-q {
       padding: 19px 22px; display: flex; align-items: center;
       justify-content: space-between; cursor: pointer;
@@ -574,7 +604,8 @@
       box-shadow: var(--shadow-card); transition: transform .2s;
     }
     .cc:hover { transform: translateX(4px); }
-    .cc-ic { width: 46px; height: 46px; border-radius: 13px; background: var(--blue-light); display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+    .cc-ic { width: 46px; height: 46px; border-radius: 13px; background: linear-gradient(135deg, #FBF1D8, var(--blue-light)); border: 1px solid #F0E2C0; color: var(--blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cc-ic svg { width: 22px; height: 22px; }
     .cc-lbl { font-size: 12px; color: var(--text-muted); font-weight: 500; }
     .cc-val { font-size: 16px; font-weight: 700; }
 
@@ -588,16 +619,16 @@
     .fl { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
     .fi, .fs, .fta {
       width: 100%; padding: 11px 15px;
-      border: 1.5px solid #DEEEFF; border-radius: 12px;
+      border: 1.5px solid #EADFC4; border-radius: 12px;
       font-size: 14px; font-family: inherit;
-      outline: none; background: #FAFCFF; transition: border-color .2s;
+      outline: none; background: #FCF8F0; transition: border-color .2s;
     }
     .fi:focus, .fs:focus, .fta:focus { border-color: var(--blue); background: white; }
     .fta { resize: vertical; min-height: 88px; }
     .fm { display: flex; gap: 7px; flex-wrap: wrap; }
     .fmo {
       flex: 1; min-width: 76px; padding: 9px 10px;
-      border: 1.5px solid #DEEEFF; border-radius: 10px;
+      border: 1.5px solid #EADFC4; border-radius: 10px;
       cursor: pointer; display: flex; align-items: center;
       justify-content: center; gap: 5px;
       font-size: 13px; font-weight: 500; background: white;
@@ -638,7 +669,8 @@
       border-bottom: 1px solid rgba(255,255,255,.09); margin-bottom: 30px;
     }
     .f-logo { display: flex; align-items: center; gap: 9px; font-weight: 800; font-size: 20px; color: white; margin-bottom: 12px; }
-    .f-logo-ic { width: 34px; height: 34px; background: var(--blue); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+    .f-logo-ic { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; }
+    .f-logo-ic svg { width: 38px; height: 38px; }
     .f-desc { font-size: 14px; line-height: 1.75; max-width: 250px; }
     .f-col h4 { color: white; font-size: 14px; font-weight: 700; margin-bottom: 14px; }
     .f-link { display: block; font-size: 14px; color: rgba(255,255,255,.58); margin-bottom: 9px; transition: color .2s; }
@@ -695,37 +727,61 @@
 <header class="header">
   <div class="header-inner">
     <a href="#" class="logo">
-      <div class="logo-icon">✈️</div>
-      <span>Travel<em>AI</em></span>
+      <div class="logo-icon">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="lgGold" x1="6" y1="6" x2="40" y2="42" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#D9B45A"/><stop offset="0.55" stop-color="#A9803A"/><stop offset="1" stop-color="#7E5B22"/>
+            </linearGradient>
+          </defs>
+          <!-- seashell -->
+          <path d="M24 5c-7 0-13 5.6-13 13 0 4.2 2.1 8 5.3 10.3-1.1-2-1.7-4.2-1.7-6.6 0-5.2 3.3-9.4 7.4-9.4 3.1 0 5.6 2.4 5.6 5.4 0 2.2-1.3 3.9-3 3.9-1.2 0-2-.8-2-1.9 0-.8.5-1.4 1.1-1.4.4 0 .7.2.9.5" stroke="url(#lgGold)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- wave -->
+          <path d="M7 36c4-3 7 1 11-2s7 1 11-2 7 1 12-2" stroke="#2BA6CE" stroke-width="2.6" stroke-linecap="round"/>
+          <path d="M9 41c4-2.6 6 .6 10-2" stroke="#7DCBDE" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-sub">Турагентство</span>
+        <span class="logo-name">FORTUNA<em> AI</em></span>
+      </div>
     </a>
 
     <nav class="hd-contacts">
       <a href="tel:+74951234567" class="hd-item">
-        <div class="hd-ic ic-phone">📞</div>
+        <div class="hd-ic ic-phone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+        </div>
         +7 (495) 123-45-67
       </a>
       <div class="hd-sep"></div>
       <a href="https://wa.me/74951234567" class="hd-item">
-        <div class="hd-ic ic-wa">💬</div>
+        <div class="hd-ic ic-wa">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35ZM12 2A10 10 0 0 0 3.5 17.2L2 22l4.9-1.5A10 10 0 1 0 12 2Z"/></svg>
+        </div>
         WhatsApp
       </a>
       <div class="hd-sep"></div>
-      <a href="https://t.me/travelai_manager" class="hd-item">
-        <div class="hd-ic ic-tg">✈</div>
+      <a href="https://t.me/fortuna_manager" class="hd-item">
+        <div class="hd-ic ic-tg">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.6 18.9 19.3c-.23 1.02-.84 1.27-1.7.79l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.33-4.78 8.7-7.86c.38-.34-.08-.53-.59-.19L6.78 13.2l-4.63-1.45c-1.01-.31-1.02-1.01.21-1.49l18.1-6.98c.84-.31 1.57.2 1.3 1.42Z"/></svg>
+        </div>
         Telegram
       </a>
       <div class="hd-sep"></div>
       <div class="hd-item">
-        <div class="hd-ic ic-time">🕐</div>
+        <div class="hd-ic ic-time">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </div>
         Пн–Вс 9:00–21:00
       </div>
     </nav>
 
     <div class="hd-actions">
-      <a href="https://t.me/travelai_bot" class="btn-hot">
+      <a href="https://t.me/fortuna_bot" class="btn-hot">
         🔥 Самые горящие туры здесь
       </a>
-      <a href="https://t.me/travelai_bot" class="btn-bot-link">
+      <a href="https://t.me/fortuna_bot" class="btn-bot-link">
         🤖 Telegram-бот для подбора туров
       </a>
     </div>
@@ -784,7 +840,7 @@
       <div class="chat-hd">
         <div class="chat-av">🤖</div>
         <div class="chat-hd-info">
-          <div class="chat-hd-name">ИИ-помощник TravelAI</div>
+          <div class="chat-hd-name">ИИ-помощник Фортуна AI</div>
           <div class="chat-hd-status"><div class="status-dot"></div> Онлайн · отвечает мгновенно</div>
         </div>
       </div>
@@ -864,32 +920,32 @@
 
     <div class="feat-grid">
       <div class="feat-card">
-        <div class="feat-ic">🤖</div>
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 7V4M9 13h.01M15 13h.01M2 11v3M22 11v3"/></svg></div>
         <div class="feat-title">ИИ-подбор за 1 минуту</div>
         <div class="feat-desc">Алгоритм анализирует тысячи предложений и мгновенно находит лучшие варианты под ваш бюджет и предпочтения.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-ic">💰</div>
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14.5 9.5c-.4-1-1.4-1.5-2.5-1.5-1.4 0-2.5.9-2.5 2s1.1 1.8 2.5 2 2.5.9 2.5 2-1.1 2-2.5 2c-1.1 0-2.1-.5-2.5-1.5M12 6.5v1.5M12 16v1.5"/></svg></div>
         <div class="feat-title">Лучшая цена гарантирована</div>
         <div class="feat-desc">Работаем напрямую с туроператорами без наценок агрегаторов. Найдёте дешевле — вернём разницу.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-ic">🛡️</div>
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.4 3 8.5 7 9.7 4-1.2 7-5.3 7-9.7V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
         <div class="feat-title">Безопасное бронирование</div>
         <div class="feat-desc">Все туроператоры в реестре. Деньги защищены страхованием ответственности туроператора.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-ic">📱</div>
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg></div>
         <div class="feat-title">Поддержка 24/7</div>
         <div class="feat-desc">Менеджеры на связи в WhatsApp и Telegram. ИИ-бот отвечает мгновенно в нерабочие часы.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-ic">✈️</div>
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3.5S18 3 16.5 4.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1Z"/></svg></div>
         <div class="feat-title">Вылеты из 50+ городов</div>
         <div class="feat-desc">Подбираем туры из всех крупных городов России со всеми авиакомпаниями по выгодным тарифам.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-ic">⭐</div>
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.2l5.9-.9Z"/></svg></div>
         <div class="feat-title">Реальные отзывы</div>
         <div class="feat-desc">Только проверенные отзывы реальных туристов с фотографиями. Никакой рекламы и заказных оценок.</div>
       </div>
@@ -947,7 +1003,7 @@
           <div class="tg-f"><div class="tg-f-dot">✓</div> Уведомления о горящих турах</div>
           <div class="tg-f"><div class="tg-f-dot">✓</div> История всех ваших запросов и бронирований</div>
         </div>
-        <a href="https://t.me/travelai_bot" class="btn-tg">
+        <a href="https://t.me/fortuna_bot" class="btn-tg">
           <span style="font-size:20px">✈</span> Открыть бота в Telegram
         </a>
       </div>
@@ -958,7 +1014,7 @@
             <span style="color:white;font-size:15px;">‹</span>
             <div class="ph-av">🤖</div>
             <div>
-              <div class="ph-name">TravelAI Bot</div>
+              <div class="ph-name">Фортуна AI</div>
               <div class="ph-online">онлайн</div>
             </div>
           </div>
@@ -1189,12 +1245,12 @@
 
     <div class="contacts-grid">
       <div class="contacts-list">
-        <div class="cc"><div class="cc-ic">📞</div><div><div class="cc-lbl">Телефон</div><div class="cc-val">+7 (495) 123-45-67</div></div></div>
-        <div class="cc"><div class="cc-ic">💬</div><div><div class="cc-lbl">WhatsApp</div><div class="cc-val">+7 (495) 123-45-67</div></div></div>
-        <div class="cc"><div class="cc-ic">✈</div><div><div class="cc-lbl">Telegram</div><div class="cc-val">@travelai_manager</div></div></div>
-        <div class="cc"><div class="cc-ic">📧</div><div><div class="cc-lbl">Email</div><div class="cc-val">info@travelai.ru</div></div></div>
-        <div class="cc"><div class="cc-ic">🕐</div><div><div class="cc-lbl">Режим работы</div><div class="cc-val">Пн–Вс, 9:00–21:00</div></div></div>
-        <div class="cc"><div class="cc-ic">📍</div><div><div class="cc-lbl">Адрес</div><div class="cc-val">Москва, ул. Тверская, 1</div></div></div>
+        <div class="cc"><div class="cc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg></div><div><div class="cc-lbl">Телефон</div><div class="cc-val">+7 (495) 123-45-67</div></div></div>
+        <div class="cc"><div class="cc-ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35ZM12 2A10 10 0 0 0 3.5 17.2L2 22l4.9-1.5A10 10 0 1 0 12 2Z"/></svg></div><div><div class="cc-lbl">WhatsApp</div><div class="cc-val">+7 (495) 123-45-67</div></div></div>
+        <div class="cc"><div class="cc-ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.6 18.9 19.3c-.23 1.02-.84 1.27-1.7.79l-4.7-3.46-2.27 2.18c-.25.25-.46.46-.94.46l.33-4.78 8.7-7.86c.38-.34-.08-.53-.59-.19L6.78 13.2l-4.63-1.45c-1.01-.31-1.02-1.01.21-1.49l18.1-6.98c.84-.31 1.57.2 1.3 1.42Z"/></svg></div><div><div class="cc-lbl">Telegram</div><div class="cc-val">@fortuna_manager</div></div></div>
+        <div class="cc"><div class="cc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div><div><div class="cc-lbl">Email</div><div class="cc-val">info@fortuna-travel.ru</div></div></div>
+        <div class="cc"><div class="cc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div><div class="cc-lbl">Режим работы</div><div class="cc-val">Пн–Вс, 9:00–21:00</div></div></div>
+        <div class="cc"><div class="cc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="cc-lbl">Адрес</div><div class="cc-val">Москва, ул. Тверская, 1</div></div></div>
       </div>
 
       <div class="cf">
@@ -1222,7 +1278,15 @@
   <div class="footer-in">
     <div class="footer-top">
       <div>
-        <div class="f-logo"><div class="f-logo-ic">✈️</div> Travel<span style="color:#64B5F6">AI</span></div>
+        <div class="f-logo">
+          <div class="f-logo-ic">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 5c-7 0-13 5.6-13 13 0 4.2 2.1 8 5.3 10.3-1.1-2-1.7-4.2-1.7-6.6 0-5.2 3.3-9.4 7.4-9.4 3.1 0 5.6 2.4 5.6 5.4 0 2.2-1.3 3.9-3 3.9-1.2 0-2-.8-2-1.9 0-.8.5-1.4 1.1-1.4.4 0 .7.2.9.5" stroke="#D9B45A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7 36c4-3 7 1 11-2s7 1 11-2 7 1 12-2" stroke="#2BA6CE" stroke-width="2.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span style="font-family:'Playfair Display',serif;letter-spacing:1px;">FORTUNA<span style="color:#2BA6CE"> AI</span></span>
+        </div>
         <div class="f-desc">Турагентство нового поколения. Подбираем идеальный отдых с помощью искусственного интеллекта и живой экспертизы менеджеров.</div>
       </div>
       <div class="f-col">
@@ -1245,14 +1309,14 @@
       <div class="f-col">
         <h4>Контакты</h4>
         <a href="tel:+74951234567" class="f-link">+7 (495) 123-45-67</a>
-        <a href="mailto:info@travelai.ru" class="f-link">info@travelai.ru</a>
-        <a href="https://t.me/travelai_bot" class="f-link">Telegram-бот</a>
+        <a href="mailto:info@fortuna-travel.ru" class="f-link">info@fortuna-travel.ru</a>
+        <a href="https://t.me/fortuna_bot" class="f-link">Telegram-бот</a>
         <a href="https://wa.me/74951234567" class="f-link">WhatsApp</a>
         <span class="f-link" style="cursor:default">Пн–Вс 9:00–21:00</span>
       </div>
     </div>
     <div class="footer-btm">
-      <div class="footer-copy">© 2025 TravelAI. Все права защищены. РТО 000123</div>
+      <div class="footer-copy">© 2025 Фортуна AI. Все права защищены. РТО 000123</div>
       <div class="footer-legal">
         <a href="#">Политика конфиденциальности</a>
         <a href="#">Оферта</a>
@@ -1297,7 +1361,7 @@
 <!-- ══════════ SCRIPT ══════════ -->
 <script>
 /*
- * TravelAI — AI Chat Engine
+ * Фортуна AI — AI Chat Engine
  * ─────────────────────────────────────────────────────────────────────────
  * Архитектура спроектирована для подключения:
  *   • OpenAI API / собственного ИИ  → заменить функцию aiReply()
