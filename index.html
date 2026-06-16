@@ -51,7 +51,7 @@
     }
     body::after {
       content: ''; position: fixed; inset: 0; z-index: -1;
-      background: rgba(255,255,255,.55);
+      background: rgba(255,255,255,.38);
     }
 
     a { text-decoration: none; color: inherit; }
@@ -211,19 +211,10 @@
       display: flex; align-items: center;
       padding: 48px 24px 56px;
       overflow: hidden; position: relative;
-      background: #FBF4E4;
+      background: transparent;
     }
-    .hero-bg {
-      position: absolute; inset: -40px;
-      background: url('assets/hero-beach.jpg') center/cover no-repeat;
-      filter: blur(4px) saturate(1.2);
-      transform: scale(1.06);
-      z-index: 0;
-    }
-    .hero-overlay {
-      position: absolute; inset: 0; z-index: 0;
-      background: linear-gradient(110deg, rgba(255,255,255,.78) 0%, rgba(255,255,255,.5) 38%, rgba(255,255,255,.18) 70%, rgba(255,255,255,.08) 100%);
-    }
+    /* Hero использует единый body-фон */
+    .hero-bg, .hero-overlay { display: none; }
     .hero::after {
       content: '';
       position: absolute; top: -80px; right: -80px;
