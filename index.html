@@ -42,6 +42,18 @@
       overflow-x: hidden;
     }
 
+    /* единый сквозной фон на весь лендинг */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -2;
+      background: url('assets/hero-beach.jpg') center/cover no-repeat;
+      filter: blur(6px) saturate(1.15);
+      transform: scale(1.06);
+    }
+    body::after {
+      content: ''; position: fixed; inset: 0; z-index: -1;
+      background: rgba(255,255,255,.55);
+    }
+
     a { text-decoration: none; color: inherit; }
     img { max-width: 100%; }
 
@@ -169,23 +181,12 @@
       display: flex; align-items: center;
     }
     .section > * { width: 100%; }
-    .section-blue { background: var(--blue-light); }
-    .section-white { background: white; }
+    .section-blue { background: transparent; }
+    .section-white { background: transparent; }
     .container { max-width: 1320px; margin: 0 auto; }
 
-    /* blurred photo backing for sections */
-    .has-bg { position: relative; overflow: hidden; }
-    .has-bg::before {
-      content: ''; position: absolute; inset: -30px; z-index: 0;
-      background-image: var(--bg);
-      background-size: cover; background-position: center;
-      filter: blur(4px) saturate(1.2);
-      transform: scale(1.06);
-    }
-    .has-bg::after {
-      content: ''; position: absolute; inset: 0; z-index: 0;
-      background: linear-gradient(150deg, rgba(255,255,255,.62) 0%, rgba(251,244,228,.5) 55%, rgba(255,255,255,.6) 100%);
-    }
+    /* секции прозрачны — фон задаёт единый body::before */
+    .has-bg { position: relative; }
     .has-bg > * { position: relative; z-index: 1; }
 
     .sec-label {
@@ -407,7 +408,7 @@
     .chat-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(169,128,58,.45); }
 
     /* ── SEARCH ── */
-    .search-block { padding: 56px 24px; background: var(--blue-light); min-height: 100vh; display: flex; align-items: center; }
+    .search-block { padding: 56px 24px; background: transparent; min-height: 100vh; display: flex; align-items: center; }
     .search-block > * { width: 100%; }
     .search-block .container { text-align: center; }
     .search-frame {
