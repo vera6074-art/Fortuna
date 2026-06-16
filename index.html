@@ -1407,10 +1407,16 @@ const CITIES = [
 // ── СЦЕНАРИЙ ДИАЛОГА ────────────────────────────────────────────────────
 const STEPS = [
   {
-    key: 'guests',
-    q: 'Привет! 👋\nЯ помогу подобрать идеальный отдых.\n\nСколько человек планирует поездку?',
-    type: 'opts',
-    opts: ['1 человек', '2 человека', '3–4 человека', '5 и более']
+    key: 'adults',
+    q: 'Привет! 👋\nЯ помогу подобрать идеальный отдых.\n\nСколько взрослых человек (от 14 лет) отправится в поездку?',
+    type: 'num',
+    placeholder: 'Например: 2',
+    min: 1, max: 20, def: 2, unit: 'взр.'
+  },
+  {
+    key: 'children_count',
+    q: 'Сколько детей (до 14 лет) поедет?\nЕсли детей нет — укажи 0.',
+    type: 'childcount'
   },
   {
     key: 'budget',
@@ -1432,12 +1438,6 @@ const STEPS = [
     q: 'Какой тип отдыха предпочитаешь?',
     type: 'opts',
     opts: ['🏖 Пляжный', '🏛 Экскурсионный', '🌿 Активный / Природа', '🎭 Смешанный']
-  },
-  {
-    key: 'children',
-    q: 'Поедут ли с тобой дети?',
-    type: 'opts',
-    opts: ['Нет детей', 'Да, есть дети']
   },
   {
     key: 'country',
@@ -1481,6 +1481,8 @@ function nextStep(i) {
   aiSay(step.q, () => {
     if (step.type === 'opts')      showOpts(step.opts, v => pick(i, v));
     else if (step.type === 'select')    showSel(step.opts);
+    else if (step.type === 'num')       showNum(step);
+    else if (step.type === 'childcount')showChildCount();
     else if (step.type === 'slider')    showSlider();
     else if (step.type === 'daterange') showDateRange();
     else if (step.type === 'numrange')  showNumRange();
@@ -1494,13 +1496,6 @@ function pick(i, val) {
   state.answers[step.key] = val;
   userSay(val);
   clearInputs();
-
-  // дети: спрашиваем количество, затем возраст каждого ребёнка
-  if (step.key === 'children' && val === 'Да, есть дети') {
-    setTimeout(askChildCount, 400);
-    return;
-  }
-
   advance(i);
 }
 
@@ -1648,28 +1643,49 @@ function sendNumRange() {
   pick(state.step, `от ${mn} до ${mx} ночей`);
 }
 
-// дети — количество, затем возраст каждого
-function askChildCount() {
-  aiSay('Сколько детей поедет?', () => {
-    custom().innerHTML = `
-      <div class="cc-box">
-        <div class="cc-row">
-          <div class="cc-half"><label class="cc-cap">Количество детей</label><input type="number" class="cc-input" id="ch-count" min="1" max="8" value="1"></div>
-        </div>
-        <div class="cc-actions"><button class="cc-btn" onclick="sendChildCount()">Далее</button></div>
-      </div>`;
-  });
+// число (взрослые) — ответ цифрой
+function showNum(step) {
+  clearInputs();
+  custom().innerHTML = `
+    <div class="cc-box">
+      <div class="cc-row">
+        <div class="cc-half"><input type="number" class="cc-input" id="num-input" min="${step.min}" max="${step.max}" value="${step.def}" placeholder="${step.placeholder || ''}"></div>
+        <button class="cc-btn" style="flex:0 0 auto;padding:11px 20px" onclick="sendNum()">Готово</button>
+      </div>
+    </div>`;
+  state._numUnit = step.unit || '';
+  state._numMin = step.min; state._numMax = step.max;
+}
+function sendNum() {
+  let n = parseInt(document.getElementById('num-input').value, 10);
+  if (!n || n < (state._numMin || 1)) { alert('Укажи количество цифрой'); return; }
+  if (state._numMax) n = Math.min(n, state._numMax);
+  pick(state.step, `${n} ${state._numUnit}`.trim());
+}
+
+// дети — шаг 2: количество (0 = детей нет), шаг 3: возраст каждого
+function showChildCount() {
+  clearInputs();
+  custom().innerHTML = `
+    <div class="cc-box">
+      <div class="cc-row">
+        <div class="cc-half"><input type="number" class="cc-input" id="ch-count" min="0" max="8" value="0" placeholder="Например: 0"></div>
+        <button class="cc-btn" style="flex:0 0 auto;padding:11px 20px" onclick="sendChildCount()">Готово</button>
+      </div>
+    </div>`;
 }
 function sendChildCount() {
   let n = parseInt(document.getElementById('ch-count').value, 10);
-  if (!n || n < 1) { alert('Укажи количество детей'); return; }
+  if (isNaN(n) || n < 0) { alert('Укажи количество детей цифрой (0 — если детей нет)'); return; }
   n = Math.min(n, 8);
   state.answers.children_count = n;
   clearInputs();
-  userSay(`Детей: ${n}`);
-  setTimeout(() => showChildAges(n), 400);
+  userSay(n === 0 ? 'Детей нет' : `Детей: ${n}`);
+  const ci = STEPS.findIndex(s => s.key === 'children_count');
+  if (n === 0) { state.answers.children_ages = '—'; advance(ci); return; }
+  setTimeout(() => showChildAges(n, ci), 450);
 }
-function showChildAges(n) {
+function showChildAges(n, ci) {
   let ages = '';
   for (let k = 1; k <= n; k++) {
     let opts = '';
@@ -1680,16 +1696,15 @@ function showChildAges(n) {
     custom().innerHTML = `
       <div class="cc-box">
         <div class="cc-ages">${ages}</div>
-        <div class="cc-actions"><button class="cc-btn" onclick="sendChildAges()">Готово</button></div>
+        <div class="cc-actions"><button class="cc-btn" onclick="sendChildAges(${ci})">Готово</button></div>
       </div>`;
   });
 }
-function sendChildAges() {
+function sendChildAges(ci) {
   const ages = [...document.querySelectorAll('.ch-age')].map(s => s.value);
   state.answers.children_ages = ages.join(', ');
   clearInputs();
   userSay(`Возраст: ${ages.join(', ')} лет`);
-  const ci = STEPS.findIndex(s => s.key === 'children');
   advance(ci);
 }
 
