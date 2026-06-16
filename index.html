@@ -524,7 +524,10 @@
       font-size: 76px;
     }
     .dest-card:hover { transform: translateY(-4px) scale(1.025); box-shadow: var(--shadow); }
-    .dest-ov { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.65) 0%, rgba(0,0,0,.1) 50%, transparent 100%); }
+    .dest-card img.dest-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .dest-card:hover img.dest-photo { transform: scale(1.08); }
+    .dest-ov { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.7) 0%, rgba(0,0,0,.15) 50%, transparent 100%); }
+    .dest-flag { position: absolute; top: 12px; left: 12px; width: 34px; height: 23px; border-radius: 5px; object-fit: cover; box-shadow: 0 2px 6px rgba(0,0,0,.35); border: 1.5px solid rgba(255,255,255,.8); }
     .dest-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 14px 14px; }
     .dest-name { font-size: 17px; font-weight: 800; color: white; margin-bottom: 3px; }
     .dest-price { font-size: 13px; color: rgba(255,255,255,.85); font-weight: 500; }
@@ -1099,24 +1102,29 @@
     <p class="sec-sub">Самые востребованные страны среди наших туристов в этом сезоне</p>
 
     <div class="dest-grid">
-      <div class="dest-card" style="background:linear-gradient(160deg,#E3F2FD,#90CAF9)" onclick="openModal()">
-        <div class="dest-ov"></div><span>🇹🇷</span>
+      <div class="dest-card" onclick="openModal()">
+        <img class="dest-photo" src="https://images.unsplash.com/photo-1605281317010-fe5ffe798166?auto=format&fit=crop&w=500&q=80" alt="Турция" loading="lazy" />
+        <div class="dest-ov"></div><img class="dest-flag" src="https://flagcdn.com/w80/tr.png" alt="Флаг Турции" loading="lazy" />
         <div class="dest-info"><div class="dest-name">Турция</div><div class="dest-price">от 85 000 ₽</div></div>
       </div>
-      <div class="dest-card" style="background:linear-gradient(160deg,#FFF8E1,#FFE082)" onclick="openModal()">
-        <div class="dest-ov"></div><span>🇪🇬</span>
+      <div class="dest-card" onclick="openModal()">
+        <img class="dest-photo" src="https://images.unsplash.com/photo-1539768942893-daf53e448371?auto=format&fit=crop&w=500&q=80" alt="Египет" loading="lazy" />
+        <div class="dest-ov"></div><img class="dest-flag" src="https://flagcdn.com/w80/eg.png" alt="Флаг Египта" loading="lazy" />
         <div class="dest-info"><div class="dest-name">Египет</div><div class="dest-price">от 65 000 ₽</div></div>
       </div>
-      <div class="dest-card" style="background:linear-gradient(160deg,#E8F5E9,#A5D6A7)" onclick="openModal()">
-        <div class="dest-ov"></div><span>🇹🇭</span>
+      <div class="dest-card" onclick="openModal()">
+        <img class="dest-photo" src="https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=500&q=80" alt="Таиланд" loading="lazy" />
+        <div class="dest-ov"></div><img class="dest-flag" src="https://flagcdn.com/w80/th.png" alt="Флаг Таиланда" loading="lazy" />
         <div class="dest-info"><div class="dest-name">Таиланд</div><div class="dest-price">от 145 000 ₽</div></div>
       </div>
-      <div class="dest-card" style="background:linear-gradient(160deg,#FCE4EC,#F48FB1)" onclick="openModal()">
-        <div class="dest-ov"></div><span>🇦🇪</span>
+      <div class="dest-card" onclick="openModal()">
+        <img class="dest-photo" src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=500&q=80" alt="ОАЭ" loading="lazy" />
+        <div class="dest-ov"></div><img class="dest-flag" src="https://flagcdn.com/w80/ae.png" alt="Флаг ОАЭ" loading="lazy" />
         <div class="dest-info"><div class="dest-name">ОАЭ</div><div class="dest-price">от 120 000 ₽</div></div>
       </div>
-      <div class="dest-card" style="background:linear-gradient(160deg,#F3E5F5,#CE93D8)" onclick="openModal()">
-        <div class="dest-ov"></div><span>🇲🇻</span>
+      <div class="dest-card" onclick="openModal()">
+        <img class="dest-photo" src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=500&q=80" alt="Мальдивы" loading="lazy" />
+        <div class="dest-ov"></div><img class="dest-flag" src="https://flagcdn.com/w80/mv.png" alt="Флаг Мальдив" loading="lazy" />
         <div class="dest-info"><div class="dest-name">Мальдивы</div><div class="dest-price">от 280 000 ₽</div></div>
       </div>
     </div>
