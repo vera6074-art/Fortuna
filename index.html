@@ -424,25 +424,27 @@
     /* ── FEATURES ── */
     .feat-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 22px; margin-top: 48px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-top: 28px;
     }
     .feat-card {
       background: white; border-radius: var(--radius);
-      padding: 28px; box-shadow: var(--shadow-card);
+      padding: 20px; box-shadow: var(--shadow-card);
       transition: all .25s; border: 1.5px solid transparent;
     }
     .feat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--blue-mid); }
     .feat-ic {
-      width: 54px; height: 54px; border-radius: 15px;
+      width: 46px; height: 46px; border-radius: 13px;
       background: linear-gradient(135deg, #FBF1D8, var(--blue-light));
       border: 1px solid #F0E2C0;
       display: flex; align-items: center; justify-content: center;
-      color: var(--blue); margin-bottom: 18px;
+      color: var(--blue); margin-bottom: 12px;
     }
-    .feat-ic svg { width: 26px; height: 26px; }
-    .feat-title { font-size: 17px; font-weight: 700; margin-bottom: 9px; }
-    .feat-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+    .feat-ic svg { width: 22px; height: 22px; }
+    .feat-title { font-size: 15.5px; font-weight: 700; margin-bottom: 6px; }
+    .feat-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+    @media(max-width:880px) { .feat-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width:560px) { .feat-grid { grid-template-columns: 1fr; } }
 
     /* ── STEPS ── */
     .steps-grid {
