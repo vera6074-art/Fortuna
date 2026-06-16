@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Фортуна AI — Подбор туров с помощью искусственного интеллекта</title>
-  <meta name="description" content="Подберите идеальный отдых за 1 минуту с помощью ИИ-помощника. Турция, Египет, ОАЭ, Мальдивы и другие направления по лучшим ценам." />
+  <meta name="description" content="Подбери идеальный отдых за 1 минуту с помощью ИИ-помощника. Турция, Египет, ОАЭ, Мальдивы и другие направления по лучшим ценам." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
@@ -62,7 +62,7 @@
       display: flex;
       align-items: center;
       gap: 20px;
-      height: 92px;
+      height: 116px;
     }
 
     .logo {
@@ -70,7 +70,7 @@
       align-items: center;
       flex-shrink: 0;
     }
-    .logo-img { height: 72px; width: auto; display: block; }
+    .logo-img { height: 94px; width: auto; display: block; }
 
     .hd-contacts {
       flex: 1;
@@ -110,18 +110,18 @@
     }
 
     .btn-hot {
-      display: inline-flex; align-items: center; gap: 6px;
+      display: inline-flex; align-items: center; gap: 7px;
       background: linear-gradient(135deg, #FF6B35, #FF8F00);
-      color: white; border: none; border-radius: 10px;
-      padding: 8px 15px; font-size: 13px; font-weight: 700;
+      color: white; border: none; border-radius: 12px;
+      padding: 12px 22px; font-size: 15px; font-weight: 700;
       cursor: pointer; transition: all .2s; white-space: nowrap;
       font-family: inherit;
     }
     .btn-hot:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(255,107,53,.4); }
 
     .btn-bot-link {
-      display: inline-flex; align-items: center; gap: 5px;
-      color: var(--blue); font-size: 13px; font-weight: 500;
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--blue); font-size: 14px; font-weight: 600;
       cursor: pointer; transition: color .2s;
     }
     .btn-bot-link:hover { color: var(--blue-dark); }
@@ -186,30 +186,35 @@
 
     /* ── HERO ── */
     .hero {
-      background: linear-gradient(155deg, #FBF4E4 0%, #FDFAF3 45%, white 75%);
       padding: 64px 24px 80px;
       overflow: hidden; position: relative;
+      background: #FBF4E4;
+    }
+    .hero-bg {
+      position: absolute; inset: -30px;
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      filter: blur(9px) saturate(1.1);
+      transform: scale(1.08);
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 0;
+      background: linear-gradient(155deg, rgba(251,244,228,.86) 0%, rgba(253,250,243,.82) 45%, rgba(255,255,255,.9) 100%);
     }
     .hero::after {
       content: '';
       position: absolute; top: -80px; right: -80px;
-      width: 480px; height: 480px;
-      background: radial-gradient(circle, rgba(217,180,90,.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero::before {
-      content: '';
-      position: absolute; bottom: -120px; left: -100px;
-      width: 420px; height: 420px;
-      background: radial-gradient(circle, rgba(43,166,206,.08) 0%, transparent 70%);
+      width: 480px; height: 480px; z-index: 0;
+      background: radial-gradient(circle, rgba(217,180,90,.16) 0%, transparent 70%);
       pointer-events: none;
     }
 
     .hero-inner {
       max-width: 1320px; margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 490px;
+      grid-template-columns: 1fr 540px;
       gap: 56px; align-items: start;
+      position: relative; z-index: 1;
     }
 
     .hero-badge {
@@ -271,9 +276,9 @@
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
 
     .chat-msgs {
-      min-height: 280px; max-height: 400px;
-      overflow-y: auto; padding: 18px;
-      display: flex; flex-direction: column; gap: 11px;
+      min-height: 380px; max-height: 520px;
+      overflow-y: auto; padding: 22px;
+      display: flex; flex-direction: column; gap: 12px;
       background: #F4FBFD;
     }
     .chat-msgs::-webkit-scrollbar { width: 4px; }
@@ -292,8 +297,8 @@
     }
 
     .msg-bbl {
-      max-width: 84%; padding: 11px 15px;
-      border-radius: 16px; font-size: 14px; line-height: 1.6;
+      max-width: 84%; padding: 12px 16px;
+      border-radius: 16px; font-size: 15px; line-height: 1.6;
     }
     .msg-ai .msg-bbl {
       background: white; color: var(--text);
@@ -763,19 +768,21 @@
 
 <!-- ══════════ HERO ══════════ -->
 <section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
   <div class="hero-inner">
 
     <div class="hero-left">
       <div class="hero-badge">🤖 Технологии ИИ в туризме · Новое поколение</div>
       <h1 class="hero-title">
-        ✈️ Подберите<br>
+        Подбери<br>
         <span class="accent">идеальный отдых</span><br>
         с помощью ИИ
       </h1>
       <p class="hero-sub">
-        Хотите подобрать тур самостоятельно? Ответьте на несколько вопросов,
+        Хочешь подобрать тур самостоятельно? Ответь на несколько вопросов,
         и искусственный интеллект поможет подобрать направление, курорт
-        и отель под ваш бюджет всего за <strong>1 минуту</strong>.
+        и отель под твой бюджет всего за <strong>1 минуту</strong>.
       </p>
       <div class="hero-stats">
         <div class="stat">
@@ -812,7 +819,7 @@
 
       <!-- text input -->
       <div class="chat-inp-row" id="row-text" style="display:none">
-        <input class="chat-inp" id="inp-text" type="text" placeholder="Напишите ответ…" />
+        <input class="chat-inp" id="inp-text" type="text" placeholder="Напиши ответ…" />
         <button class="chat-send-btn" onclick="sendText()">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
@@ -849,8 +856,8 @@
 <section class="search-block" id="search">
   <div class="container">
     <div class="sec-label">🔍 Классический поиск</div>
-    <h2 class="sec-title">Или воспользуйтесь классическим поиском туров</h2>
-    <p class="sec-sub">Используйте удобный поиск по всем туроператорам России в реальном времени</p>
+    <h2 class="sec-title">Или воспользуйся классическим поиском туров</h2>
+    <p class="sec-sub">Используй удобный поиск по всем туроператорам России в реальном времени</p>
 
     <div class="search-frame">
       <!--
@@ -878,13 +885,13 @@
   <div class="container">
     <div class="sec-label">💎 Преимущества</div>
     <h2 class="sec-title">Почему выбирают нас</h2>
-    <p class="sec-sub">Мы объединили живую экспертизу менеджеров и возможности ИИ, чтобы вы получили идеальный отдых</p>
+    <p class="sec-sub">Мы объединили живую экспертизу менеджеров и возможности ИИ, чтобы ты получил идеальный отдых</p>
 
     <div class="feat-grid">
       <div class="feat-card">
         <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 7V4M9 13h.01M15 13h.01M2 11v3M22 11v3"/></svg></div>
         <div class="feat-title">ИИ-подбор за 1 минуту</div>
-        <div class="feat-desc">Алгоритм анализирует тысячи предложений и мгновенно находит лучшие варианты под ваш бюджет и предпочтения.</div>
+        <div class="feat-desc">Алгоритм анализирует тысячи предложений и мгновенно находит лучшие варианты под твой бюджет и предпочтения.</div>
       </div>
       <div class="feat-card">
         <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14.5 9.5c-.4-1-1.4-1.5-2.5-1.5-1.4 0-2.5.9-2.5 2s1.1 1.8 2.5 2 2.5.9 2.5 2-1.1 2-2.5 2c-1.1 0-2.1-.5-2.5-1.5M12 6.5v1.5M12 16v1.5"/></svg></div>
@@ -926,26 +933,26 @@
       <div class="step">
         <div class="step-num">1 <div class="step-conn"></div></div>
         <div class="step-em">🤖</div>
-        <div class="step-title">Общаетесь с ИИ</div>
-        <div class="step-desc">Отвечаете на вопросы ИИ-помощника о бюджете, датах и предпочтениях</div>
+        <div class="step-title">Общаешься с ИИ</div>
+        <div class="step-desc">Отвечаешь на вопросы ИИ-помощника о бюджете, датах и предпочтениях</div>
       </div>
       <div class="step">
         <div class="step-num">2 <div class="step-conn"></div></div>
         <div class="step-em">📋</div>
-        <div class="step-title">Получаете подборку</div>
+        <div class="step-title">Получаешь подборку</div>
         <div class="step-desc">В течение 15 минут менеджер отправляет персональную подборку туров</div>
       </div>
       <div class="step">
         <div class="step-num">3 <div class="step-conn"></div></div>
         <div class="step-em">✅</div>
-        <div class="step-title">Выбираете и платите</div>
-        <div class="step-desc">Выбираете понравившийся вариант и оплачиваете онлайн или по реквизитам</div>
+        <div class="step-title">Выбираешь и платишь</div>
+        <div class="step-desc">Выбираешь понравившийся вариант и оплачиваешь онлайн или по реквизитам</div>
       </div>
       <div class="step">
         <div class="step-num">4</div>
         <div class="step-em">✈️</div>
-        <div class="step-title">Летите отдыхать!</div>
-        <div class="step-desc">Получаете все документы на почту и отправляетесь в путешествие</div>
+        <div class="step-title">Летишь отдыхать!</div>
+        <div class="step-desc">Получаешь все документы на почту и отправляешься в путешествие</div>
       </div>
     </div>
   </div>
@@ -958,12 +965,12 @@
       <div>
         <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);color:white;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:600;margin-bottom:18px;">🤖 Telegram-бот</div>
         <h2 class="tg-title">Подберите тур прямо<br>в Telegram</h2>
-        <p class="tg-sub">Наш умный бот работает 24/7 и поможет подобрать идеальный отдых даже ночью. Просто напишите, куда хотите — бот сделает всё остальное.</p>
+        <p class="tg-sub">Наш умный бот работает 24/7 и поможет подобрать идеальный отдых даже ночью. Просто напиши, куда хочешь — бот сделает всё остальное.</p>
         <div class="tg-feats">
           <div class="tg-f"><div class="tg-f-dot">✓</div> Мгновенные ответы в любое время суток</div>
           <div class="tg-f"><div class="tg-f-dot">✓</div> Персональные рекомендации на основе ИИ</div>
           <div class="tg-f"><div class="tg-f-dot">✓</div> Уведомления о горящих турах</div>
-          <div class="tg-f"><div class="tg-f-dot">✓</div> История всех ваших запросов и бронирований</div>
+          <div class="tg-f"><div class="tg-f-dot">✓</div> История всех твоих запросов и бронирований</div>
         </div>
         <a href="https://t.me/fortuna_bot" class="btn-tg">
           <span style="font-size:20px">✈</span> Открыть бота в Telegram
@@ -1177,23 +1184,24 @@
     <div class="faq-list">
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">Как работает ИИ-подбор туров? <div class="faq-ic">+</div></div>
-        <div class="faq-a">Вы отвечаете на несколько вопросов в чате: бюджет, даты, количество туристов, тип отдыха и предпочтения. ИИ анализирует тысячи предложений от туроператоров и формирует персональную подборку. Менеджер проверяет результат и отправляет вам финальный список с ценами в WhatsApp или Telegram.</div>
+        <div class="faq-a">Ты отвечаешь на несколько вопросов в чате: бюджет, даты, количество туристов, тип отдыха и предпочтения. ИИ анализирует тысячи предложений от туроператоров и формирует персональную подборку. Менеджер проверяет результат и отправляет тебе финальный список с ценами в WhatsApp или Telegram.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">Сколько стоит подбор тура? <div class="faq-ic">+</div></div>
-        <div class="faq-a">Подбор и консультация — абсолютно бесплатно. Вы платите только за сам тур по ценам туроператоров. Мы не добавляем никаких скрытых наценок — наша комиссия уже включена в стоимость тура туроператором.</div>
+        <div class="faq-a">Подбор и консультация — абсолютно бесплатно. Ты платишь только за сам тур по ценам туроператоров. Мы не добавляем никаких скрытых наценок — наша комиссия уже включена в стоимость тура туроператором.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">Безопасно ли бронировать туры онлайн? <div class="faq-ic">+</div></div>
-        <div class="faq-a">Да, полностью безопасно. Мы работаем только с аккредитованными туроператорами, внесёнными в Единый федеральный реестр. Все туры застрахованы. Вы получаете официальный договор и все документы. Оплата проводится через защищённые платёжные системы.</div>
+        <div class="faq-a">Да, полностью безопасно. Мы работаем только с аккредитованными туроператорами, внесёнными в Единый федеральный реестр. Все туры застрахованы. Ты получаешь официальный договор и все документы. Оплата проводится через защищённые платёжные системы.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">Из каких городов вы оформляете туры? <div class="faq-ic">+</div></div>
+        <!-- вопрос обращён к компании, форма «вы» сохранена намеренно -->
         <div class="faq-a">Мы подбираем туры из всех крупных городов России: Москва, Санкт-Петербург, Казань, Екатеринбург, Новосибирск, Краснодар, Ростов-на-Дону, Уфа, Самара, Пермь и многих других — более 50 городов вылета.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">Что если я хочу изменить или отменить тур? <div class="faq-ic">+</div></div>
-        <div class="faq-a">Условия изменения и отмены зависят от туроператора и тарифа. Наши менеджеры помогут разобраться в условиях до бронирования и подберут тариф с максимальной гибкостью. Если возникнет необходимость — мы будем сопровождать вас на каждом шаге.</div>
+        <div class="faq-a">Условия изменения и отмены зависят от туроператора и тарифа. Наши менеджеры помогут разобраться в условиях до бронирования и подберут тариф с максимальной гибкостью. Если возникнет необходимость — мы будем сопровождать тебя на каждом шаге.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">Как быстро я получу подборку туров? <div class="faq-ic">+</div></div>
@@ -1207,7 +1215,7 @@
 <section class="section section-blue" id="contacts">
   <div class="container">
     <div class="sec-label">📍 Контакты</div>
-    <h2 class="sec-title">Свяжитесь с нами</h2>
+    <h2 class="sec-title">Свяжись с нами</h2>
     <p class="sec-sub">Мы онлайн с 9:00 до 21:00, ИИ-бот доступен 24/7</p>
 
     <div class="contacts-grid">
@@ -1222,8 +1230,8 @@
 
       <div class="cf">
         <h3>Оставить заявку</h3>
-        <p>Заполните форму и мы свяжемся с вами в ближайшее время</p>
-        <div class="fg"><label class="fl">Ваше имя</label><input type="text" class="fi" placeholder="Как вас зовут?" /></div>
+        <p>Заполни форму и мы свяжемся с тобой в ближайшее время</p>
+        <div class="fg"><label class="fl">Твоё имя</label><input type="text" class="fi" placeholder="Как тебя зовут?" /></div>
         <div class="fg"><label class="fl">Телефон</label><input type="tel" class="fi" placeholder="+7 (___) ___-__-__" /></div>
         <div class="fg">
           <label class="fl">Удобный способ связи</label>
@@ -1233,7 +1241,7 @@
             <button class="fmo" onclick="this.classList.toggle('active')">📞 Звонок</button>
           </div>
         </div>
-        <div class="fg"><label class="fl">Пожелания</label><textarea class="fta" placeholder="Куда хотите поехать, бюджет, даты…"></textarea></div>
+        <div class="fg"><label class="fl">Пожелания</label><textarea class="fta" placeholder="Куда хочешь поехать, бюджет, даты…"></textarea></div>
         <button class="btn btn-primary" style="width:100%" onclick="submitContact()">Отправить заявку</button>
       </div>
     </div>
@@ -1298,8 +1306,8 @@
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">×</button>
     <h3>📋 Получить подборку туров</h3>
-    <p>Оставьте контакты — менеджер отправит персональную подборку в течение 15 минут</p>
-    <div class="fg"><label class="fl">Ваше имя *</label><input type="text" class="fi" id="m-name" placeholder="Как вас зовут?" /></div>
+    <p>Оставь контакты — менеджер отправит персональную подборку в течение 15 минут</p>
+    <div class="fg"><label class="fl">Твоё имя *</label><input type="text" class="fi" id="m-name" placeholder="Как тебя зовут?" /></div>
     <div class="fg"><label class="fl">Телефон *</label><input type="tel" class="fi" id="m-phone" placeholder="+7 (___) ___-__-__" /></div>
     <div class="fg">
       <label class="fl">Удобный способ получения подборки</label>
@@ -1311,7 +1319,7 @@
     </div>
     <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="submitLead()">Получить подборку →</button>
     <div style="font-size:12px;color:#9CA3AF;text-align:center;margin-top:10px;">
-      Нажимая кнопку, вы соглашаетесь с <a href="#" style="color:var(--blue)">политикой конфиденциальности</a>
+      Нажимая кнопку, ты соглашаешься с <a href="#" style="color:var(--blue)">политикой конфиденциальности</a>
     </div>
   </div>
 </div>
@@ -1321,7 +1329,7 @@
   <div class="notify-icon">✅</div>
   <div>
     <div class="notify-title" id="n-title">Заявка отправлена!</div>
-    <div class="notify-sub" id="n-sub">Менеджер свяжется с вами в течение 15 минут</div>
+    <div class="notify-sub" id="n-sub">Менеджер свяжется с тобой в течение 15 минут</div>
   </div>
 </div>
 
@@ -1368,24 +1376,24 @@ const STEPS = [
   },
   {
     key: 'date',
-    q: 'Когда планируете вылететь?\nВыберите примерную дату отправления:',
+    q: 'Когда планируешь вылететь?\nВыбери примерную дату отправления:',
     type: 'date'
   },
   {
     key: 'duration',
-    q: 'На сколько дней планируете отдых?',
+    q: 'На сколько дней планируешь отдых?',
     type: 'opts',
     opts: ['3–5 дней', '7 дней', '10–14 дней', 'более 14 дней']
   },
   {
     key: 'rest_type',
-    q: 'Какой тип отдыха предпочитаете?',
+    q: 'Какой тип отдыха предпочитаешь?',
     type: 'opts',
     opts: ['🏖 Пляжный', '🏛 Экскурсионный', '🌿 Активный / Природа', '🎭 Смешанный']
   },
   {
     key: 'children',
-    q: 'Поедут ли с вами дети?',
+    q: 'Поедут ли с тобой дети?',
     type: 'opts',
     opts: ['Нет детей', 'Да, есть дети']
   },
@@ -1397,7 +1405,7 @@ const STEPS = [
   },
   {
     key: 'city',
-    q: 'Из какого города планируете вылет?',
+    q: 'Из какого города планируешь вылет?',
     type: 'select',
     opts: CITIES
   },
@@ -1583,7 +1591,7 @@ function showResult() {
   const country = a.country && !a.country.includes('ИИ') ? `<br>Направление: <strong>${a.country}</strong>.` : '';
   const hotel   = a.hotel ? ` Под категорию «${a.hotel}»` : '';
 
-  const txt = `Отлично! Я собрал всю информацию 📋\n\nДля вашего бюджета ${rec}${country}${hotel} подберу несколько конкретных отелей с актуальными ценами.\n\nЧтобы получить персональную подборку — оставьте контакты, и менеджер отправит её в течение 15 минут! 👇`;
+  const txt = `Отлично! Я собрал всю информацию 📋\n\nДля твоего бюджета ${rec}${country}${hotel} подберу несколько конкретных отелей с актуальными ценами.\n\nЧтобы получить персональную подборку — оставь контакты, и менеджер отправит её в течение 15 минут! 👇`;
 
   aiSay(txt, () => {
     document.getElementById('chat-cta').style.display = 'block';
@@ -1615,7 +1623,7 @@ function submitLead() {
    */
 
   closeModal();
-  notify('Подборка туров отправляется! 🎉', 'Менеджер свяжется с вами в течение 15 минут');
+  notify('Подборка туров отправляется! 🎉', 'Менеджер свяжется с тобой в течение 15 минут');
 }
 
 function submitContact() {
