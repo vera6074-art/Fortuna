@@ -1619,6 +1619,8 @@ function sendDateRange() {
   const f = document.getElementById('dr-from').value;
   const t = document.getElementById('dr-to').value;
   if (!f || !t) { alert('Выбери обе даты'); return; }
+  const diffDays = (new Date(t) - new Date(f)) / 86400000;
+  if (diffDays < 1) { alert('Срок поездки не может быть менее одного дня. Дата «по» должна быть позже даты «с».'); return; }
   const fmt = s => new Date(s).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
   pick(state.step, `с ${fmt(f)} по ${fmt(t)}`);
 }
