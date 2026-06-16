@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TravelAI — Подбор туров с помощью искусственного интеллекта</title>
+  <meta name="description" content="Подберите идеальный отдых за 1 минуту с помощью ИИ-помощника. Турция, Египет, ОАЭ, Мальдивы и другие направления по лучшим ценам." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #1976D2;
+      --blue-dark: #1565C0;
+      --blue-light: #EAF6FF;
+      --blue-mid: #BBDEFB;
+      --text: #222222;
+      --text-muted: #6B7280;
+      --white: #ffffff;
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(25, 118, 210, 0.12);
+      --shadow-card: 0 2px 16px rgba(0,0,0,0.07);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; }
+
+    /* ── HEADER ── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid #E3F0FF;
+    }
+
+    .header-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      height: 70px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.4px;
+      flex-shrink: 0;
+      color: var(--text);
+    }
+
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: var(--blue);
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+
+    .logo em { color: var(--blue); font-style: normal; }
+
+    .hd-contacts {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .hd-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 14px; font-weight: 500;
+      color: var(--text);
+      transition: color .2s;
+    }
+    .hd-item:hover { color: var(--blue); }
+
+    .hd-ic {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+    .ic-phone { background: #E8F5E9; }
+    .ic-wa    { background: #E8F5E9; }
+    .ic-tg    { background: #E3F2FD; }
+    .ic-time  { background: var(--blue-light); }
+
+    .hd-sep { width: 1px; height: 22px; background: #E5E7EB; }
+
+    .hd-actions {
+      display: flex; flex-direction: column;
+      align-items: flex-end; gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .btn-hot {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: linear-gradient(135deg, #FF6B35, #FF8F00);
+      color: white; border: none; border-radius: 10px;
+      padding: 8px 15px; font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: all .2s; white-space: nowrap;
+      font-family: inherit;
+    }
+    .btn-hot:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(255,107,53,.4); }
+
+    .btn-bot-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      color: var(--blue); font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: color .2s;
+    }
+    .btn-bot-link:hover { color: var(--blue-dark); }
+
+    /* ── TRUST BAR ── */
+    .trust-bar {
+      background: #F5FBFF;
+      border-bottom: 1px solid #E3F0FF;
+      padding: 11px 24px;
+    }
+    .trust-bar-in {
+      max-width: 1320px; margin: 0 auto;
+      display: flex; align-items: center;
+      justify-content: center; gap: 28px; flex-wrap: wrap;
+    }
+    .t-item { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
+    .t-check { color: #43A047; font-size: 15px; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; border: none; cursor: pointer;
+      font-family: inherit; font-weight: 600;
+      transition: all .22s;
+    }
+    .btn-primary {
+      background: var(--blue); color: white;
+      border-radius: var(--radius);
+      padding: 14px 28px; font-size: 16px;
+      box-shadow: 0 4px 16px rgba(25,118,210,.25);
+    }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(25,118,210,.35); }
+    .btn-sm { padding: 10px 20px; font-size: 14px; border-radius: 12px; }
+    .btn-outline {
+      background: transparent; color: var(--blue);
+      border: 2px solid var(--blue); border-radius: var(--radius);
+      padding: 12px 26px; font-size: 15px;
+    }
+    .btn-outline:hover { background: var(--blue-light); }
+
+    /* ── SECTION ── */
+    .section { padding: 80px 24px; }
+    .section-blue { background: var(--blue-light); }
+    .section-white { background: white; }
+    .container { max-width: 1320px; margin: 0 auto; }
+
+    .sec-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--blue-light); color: var(--blue);
+      border-radius: 20px; padding: 5px 14px;
+      font-size: 13px; font-weight: 600; margin-bottom: 14px;
+    }
+    .sec-label.orange { background: #FFF3E0; color: #E65100; }
+    .sec-label.green  { background: #E8F5E9; color: #2E7D32; }
+
+    .sec-title {
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 800; line-height: 1.2;
+      letter-spacing: -.5px; margin-bottom: 14px;
+    }
+    .sec-sub { font-size: 17px; color: var(--text-muted); max-width: 580px; line-height: 1.75; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(155deg, #F0F9FF 0%, white 65%);
+      padding: 64px 24px 80px;
+      overflow: hidden; position: relative;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; top: -80px; right: -80px;
+      width: 480px; height: 480px;
+      background: radial-gradient(circle, rgba(25,118,210,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1320px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 490px;
+      gap: 56px; align-items: start;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+      color: #0D47A1; border-radius: 20px;
+      padding: 6px 16px; font-size: 13px; font-weight: 600;
+      margin-bottom: 22px;
+    }
+
+    .hero-title {
+      font-size: clamp(30px, 4.5vw, 52px);
+      font-weight: 800; line-height: 1.13;
+      letter-spacing: -1px; margin-bottom: 18px;
+    }
+    .hero-title .accent { color: var(--blue); }
+
+    .hero-sub {
+      font-size: 18px; color: var(--text-muted);
+      line-height: 1.75; margin-bottom: 36px; max-width: 530px;
+    }
+
+    .hero-stats { display: flex; gap: 28px; flex-wrap: wrap; }
+    .stat { display: flex; flex-direction: column; gap: 2px; }
+    .stat-val { font-size: 28px; font-weight: 800; color: var(--blue); line-height: 1; }
+    .stat-lbl { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+    /* ── AI CHAT ── */
+    .ai-chat {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 8px 48px rgba(25,118,210,.15), 0 2px 8px rgba(0,0,0,.06);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      position: relative; z-index: 1;
+    }
+
+    .chat-hd {
+      background: linear-gradient(135deg, var(--blue), #1565C0);
+      padding: 16px 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .chat-av {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: rgba(255,255,255,.18);
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+    .chat-hd-info { flex: 1; }
+    .chat-hd-name { color: white; font-weight: 700; font-size: 15px; }
+    .chat-hd-status {
+      color: rgba(255,255,255,.8); font-size: 12px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      background: #66BB6A; border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+    .chat-msgs {
+      min-height: 280px; max-height: 400px;
+      overflow-y: auto; padding: 18px;
+      display: flex; flex-direction: column; gap: 11px;
+      background: #F7FBFF;
+    }
+    .chat-msgs::-webkit-scrollbar { width: 4px; }
+    .chat-msgs::-webkit-scrollbar-thumb { background: #BBDEFB; border-radius: 4px; }
+
+    .msg { display: flex; gap: 8px; animation: fadeUp .3s ease; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+    .msg-ai { align-items: flex-start; }
+    .msg-user { flex-direction: row-reverse; }
+
+    .msg-ic {
+      width: 32px; height: 32px; border-radius: 10px;
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0;
+    }
+
+    .msg-bbl {
+      max-width: 84%; padding: 11px 15px;
+      border-radius: 16px; font-size: 14px; line-height: 1.6;
+    }
+    .msg-ai .msg-bbl {
+      background: white; color: var(--text);
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .msg-user .msg-bbl {
+      background: var(--blue); color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .typing-bbl {
+      display: flex; align-items: center; gap: 4px;
+      padding: 14px 18px;
+    }
+    .td { width: 7px; height: 7px; background: #90CAF9; border-radius: 50%; animation: bounce 1.2s infinite; }
+    .td:nth-child(2){animation-delay:.2s} .td:nth-child(3){animation-delay:.4s}
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+    .chat-opts {
+      padding: 0 16px 12px; background: #F7FBFF;
+      display: flex; flex-wrap: wrap; gap: 7px;
+    }
+    .chat-opt {
+      padding: 8px 15px; border-radius: 20px;
+      border: 2px solid var(--blue-mid);
+      background: white; color: var(--blue);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all .18s; font-family: inherit;
+    }
+    .chat-opt:hover { background: var(--blue); color: white; border-color: var(--blue); }
+
+    .chat-inp-row {
+      padding: 11px 14px; background: white;
+      border-top: 1px solid #E5F0FF;
+      display: flex; gap: 8px; align-items: center;
+    }
+    .chat-inp {
+      flex: 1; border: 1.5px solid #DEEEFF;
+      border-radius: 12px; padding: 10px 14px;
+      font-size: 14px; outline: none;
+      transition: border-color .2s; font-family: inherit;
+    }
+    .chat-inp:focus { border-color: var(--blue); }
+
+    .chat-sel {
+      flex: 1; border: 1.5px solid #DEEEFF;
+      border-radius: 12px; padding: 10px 14px;
+      font-size: 14px; outline: none; background: white;
+      font-family: inherit; color: var(--text);
+      transition: border-color .2s; cursor: pointer;
+    }
+    .chat-sel:focus { border-color: var(--blue); }
+
+    .chat-date {
+      flex: 1; border: 1.5px solid #DEEEFF;
+      border-radius: 12px; padding: 10px 14px;
+      font-size: 14px; outline: none;
+      font-family: inherit; transition: border-color .2s;
+    }
+    .chat-date:focus { border-color: var(--blue); }
+
+    .chat-send-btn {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: var(--blue); border: none; color: white;
+      cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .chat-send-btn:hover { background: var(--blue-dark); transform: scale(1.06); }
+
+    .chat-cta {
+      padding: 12px 14px; background: white;
+      border-top: 1px solid #E5F0FF;
+    }
+    .chat-cta-btn {
+      width: 100%; padding: 12px;
+      background: linear-gradient(135deg, var(--blue), #1565C0);
+      color: white; border: none; border-radius: 12px;
+      font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: all .2s; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .chat-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(25,118,210,.4); }
+
+    /* ── SEARCH ── */
+    .search-block { padding: 64px 24px; background: var(--blue-light); }
+    .search-block .container { text-align: center; }
+    .search-frame {
+      background: white; border-radius: var(--radius);
+      box-shadow: var(--shadow-card); overflow: hidden;
+      min-height: 180px; margin-top: 28px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .search-ph { padding: 56px 40px; text-align: center; }
+    .search-ph-icon { font-size: 48px; margin-bottom: 14px; }
+    .search-ph h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .search-ph p { color: var(--text-muted); font-size: 14px; max-width: 420px; margin: 0 auto; line-height: 1.7; }
+
+    /* ── FEATURES ── */
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px; margin-top: 48px;
+    }
+    .feat-card {
+      background: white; border-radius: var(--radius);
+      padding: 28px; box-shadow: var(--shadow-card);
+      transition: all .25s; border: 1.5px solid transparent;
+    }
+    .feat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #BBDEFB; }
+    .feat-ic {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: var(--blue-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 18px;
+    }
+    .feat-title { font-size: 17px; font-weight: 700; margin-bottom: 9px; }
+    .feat-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+
+    /* ── STEPS ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px,1fr));
+      gap: 32px; margin-top: 48px; position: relative;
+    }
+    .step { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+    .step-num {
+      width: 58px; height: 58px; border-radius: 50%;
+      background: var(--blue); color: white;
+      font-size: 22px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px; box-shadow: 0 6px 20px rgba(25,118,210,.28);
+      position: relative; z-index: 1;
+    }
+    .step-conn {
+      position: absolute; top: 29px;
+      left: calc(50% + 29px); right: calc(-50% + 29px);
+      height: 2px; background: linear-gradient(90deg, var(--blue-mid), transparent);
+    }
+    .step:last-child .step-conn { display: none; }
+    .step-em { font-size: 28px; margin-bottom: 10px; }
+    .step-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .step-desc { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+
+    /* ── TELEGRAM BOT ── */
+    .tg-wrap { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+    .tg-block {
+      background: linear-gradient(135deg, #0D47A1, #1976D2 60%, #29B6F6 100%);
+      border-radius: 24px; padding: 60px 52px;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 40px; align-items: center;
+    }
+    .tg-title { font-size: clamp(24px,3.5vw,38px); font-weight: 800; color: white; line-height: 1.2; margin-bottom: 14px; }
+    .tg-sub { color: rgba(255,255,255,.85); font-size: 16px; line-height: 1.75; margin-bottom: 28px; max-width: 500px; }
+    .tg-feats { display: flex; flex-direction: column; gap: 11px; margin-bottom: 30px; }
+    .tg-f { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,.9); font-size: 15px; }
+    .tg-f-dot { width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,.18); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+    .btn-tg {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 15px 30px; background: white; color: var(--blue);
+      border-radius: var(--radius); font-weight: 700; font-size: 16px;
+      transition: all .2s;
+    }
+    .btn-tg:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+
+    .tg-phone {
+      width: 196px; height: 356px;
+      background: rgba(255,255,255,.12);
+      border-radius: 28px; border: 2px solid rgba(255,255,255,.2);
+      overflow: hidden; display: flex; flex-direction: column;
+    }
+    .ph-top {
+      background: rgba(255,255,255,.1);
+      padding: 13px 14px 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .ph-av { width: 30px; height: 30px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+    .ph-name { color: white; font-size: 12px; font-weight: 600; }
+    .ph-online { color: rgba(255,255,255,.65); font-size: 10px; }
+    .ph-msgs { flex: 1; padding: 10px 9px; display: flex; flex-direction: column; gap: 7px; }
+    .pm { padding: 7px 9px; border-radius: 10px; font-size: 10.5px; line-height: 1.5; max-width: 82%; }
+    .pm-ai { background: rgba(255,255,255,.16); color: white; border-bottom-left-radius: 3px; }
+    .pm-u { background: white; color: var(--text); align-self: flex-end; border-bottom-right-radius: 3px; }
+
+    /* ── TOURS ── */
+    .tours-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: 22px; margin-top: 40px;
+    }
+    .tour-card {
+      background: white; border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--shadow-card);
+      transition: all .25s; border: 1.5px solid transparent;
+    }
+    .tour-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #BBDEFB; }
+    .tour-img { height: 188px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .tour-img-em { font-size: 72px; transition: transform .4s; }
+    .tour-card:hover .tour-img-em { transform: scale(1.1); }
+    .tour-badge { position: absolute; top: 12px; left: 12px; background: #F44336; color: white; border-radius: 8px; padding: 4px 10px; font-size: 12px; font-weight: 700; }
+    .tour-stars { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,.52); color: #FFD700; border-radius: 8px; padding: 4px 10px; font-size: 12px; font-weight: 700; }
+    .tour-body { padding: 18px; }
+    .tour-cntry { font-size: 11px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+    .tour-name { font-size: 16px; font-weight: 700; margin-bottom: 9px; }
+    .tour-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .tour-tag { font-size: 12px; color: var(--blue); background: var(--blue-light); padding: 4px 10px; border-radius: 7px; font-weight: 500; }
+    .tour-ft { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid #F0F6FF; }
+    .tour-from { font-size: 11px; color: var(--text-muted); }
+    .tour-price { font-size: 22px; font-weight: 800; }
+    .tour-price small { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+
+    /* ── DESTINATIONS ── */
+    .dest-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(185px,1fr));
+      gap: 18px; margin-top: 40px;
+    }
+    .dest-card {
+      border-radius: var(--radius); overflow: hidden;
+      position: relative; cursor: pointer; aspect-ratio: 3/4;
+      box-shadow: var(--shadow-card); transition: all .25s;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 76px;
+    }
+    .dest-card:hover { transform: translateY(-4px) scale(1.025); box-shadow: var(--shadow); }
+    .dest-ov { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.65) 0%, rgba(0,0,0,.1) 50%, transparent 100%); }
+    .dest-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 14px 14px; }
+    .dest-name { font-size: 17px; font-weight: 800; color: white; margin-bottom: 3px; }
+    .dest-price { font-size: 13px; color: rgba(255,255,255,.85); font-weight: 500; }
+
+    /* ── REVIEWS ── */
+    .rev-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px,1fr));
+      gap: 22px; margin-top: 40px;
+    }
+    .rev-card {
+      background: white; border-radius: var(--radius);
+      padding: 26px; box-shadow: var(--shadow-card);
+      transition: transform .25s; border: 1.5px solid transparent;
+    }
+    .rev-card:hover { transform: translateY(-3px); border-color: #BBDEFB; }
+    .rev-stars { color: #FFB300; font-size: 18px; margin-bottom: 11px; }
+    .rev-text { font-size: 15px; color: var(--text); line-height: 1.75; margin-bottom: 18px; font-style: italic; }
+    .rev-author { display: flex; align-items: center; gap: 12px; }
+    .rev-av { width: 44px; height: 44px; border-radius: 50%; background: var(--blue-light); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .rev-name { font-weight: 700; font-size: 14px; }
+    .rev-meta { font-size: 12px; color: var(--text-muted); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 11px; margin-top: 40px; max-width: 820px; }
+    .faq-item { background: white; border-radius: var(--radius); border: 1.5px solid #E3F0FF; overflow: hidden; }
+    .faq-item.open { border-color: #BBDEFB; }
+    .faq-q {
+      padding: 19px 22px; display: flex; align-items: center;
+      justify-content: space-between; cursor: pointer;
+      font-weight: 600; font-size: 15px; gap: 12px;
+    }
+    .faq-ic {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: var(--blue-light); color: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0; transition: transform .3s;
+    }
+    .faq-item.open .faq-ic { transform: rotate(45deg); background: var(--blue); color: white; }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height .35s ease, padding .3s;
+      padding: 0 22px; font-size: 14px; color: var(--text-muted); line-height: 1.8;
+    }
+    .faq-item.open .faq-a { max-height: 260px; padding: 0 22px 18px; }
+
+    /* ── CONTACTS ── */
+    .contacts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-top: 48px; }
+    .contacts-list { display: flex; flex-direction: column; gap: 16px; }
+    .cc {
+      background: white; border-radius: var(--radius);
+      padding: 18px 22px; display: flex; align-items: center; gap: 14px;
+      box-shadow: var(--shadow-card); transition: transform .2s;
+    }
+    .cc:hover { transform: translateX(4px); }
+    .cc-ic { width: 46px; height: 46px; border-radius: 13px; background: var(--blue-light); display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+    .cc-lbl { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+    .cc-val { font-size: 16px; font-weight: 700; }
+
+    .cf {
+      background: white; border-radius: var(--radius);
+      padding: 34px; box-shadow: var(--shadow-card);
+    }
+    .cf h3 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+    .cf p { font-size: 14px; color: var(--text-muted); margin-bottom: 22px; }
+    .fg { margin-bottom: 14px; }
+    .fl { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+    .fi, .fs, .fta {
+      width: 100%; padding: 11px 15px;
+      border: 1.5px solid #DEEEFF; border-radius: 12px;
+      font-size: 14px; font-family: inherit;
+      outline: none; background: #FAFCFF; transition: border-color .2s;
+    }
+    .fi:focus, .fs:focus, .fta:focus { border-color: var(--blue); background: white; }
+    .fta { resize: vertical; min-height: 88px; }
+    .fm { display: flex; gap: 7px; flex-wrap: wrap; }
+    .fmo {
+      flex: 1; min-width: 76px; padding: 9px 10px;
+      border: 1.5px solid #DEEEFF; border-radius: 10px;
+      cursor: pointer; display: flex; align-items: center;
+      justify-content: center; gap: 5px;
+      font-size: 13px; font-weight: 500; background: white;
+      transition: all .18s; font-family: inherit;
+    }
+    .fmo:hover, .fmo.active { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+
+    /* ── MODAL ── */
+    .modal-ov {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.5); z-index: 999;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px; opacity: 0; pointer-events: none; transition: opacity .25s;
+    }
+    .modal-ov.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: white; border-radius: 24px;
+      padding: 40px; max-width: 470px; width: 100%;
+      box-shadow: 0 24px 80px rgba(0,0,0,.2);
+      transform: translateY(20px) scale(.97); transition: all .25s;
+      position: relative;
+    }
+    .modal-ov.open .modal { transform: none; }
+    .modal h3 { font-size: 24px; font-weight: 800; margin-bottom: 7px; }
+    .modal > p { color: var(--text-muted); font-size: 15px; margin-bottom: 22px; }
+    .modal-close {
+      position: absolute; top: 14px; right: 18px;
+      font-size: 24px; cursor: pointer; color: var(--text-muted);
+      background: none; border: none; line-height: 1; padding: 4px;
+    }
+
+    /* ── FOOTER ── */
+    .footer { background: #0C1B2B; color: rgba(255,255,255,.72); padding: 60px 24px 36px; }
+    .footer-in { max-width: 1320px; margin: 0 auto; }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,.09); margin-bottom: 30px;
+    }
+    .f-logo { display: flex; align-items: center; gap: 9px; font-weight: 800; font-size: 20px; color: white; margin-bottom: 12px; }
+    .f-logo-ic { width: 34px; height: 34px; background: var(--blue); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+    .f-desc { font-size: 14px; line-height: 1.75; max-width: 250px; }
+    .f-col h4 { color: white; font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+    .f-link { display: block; font-size: 14px; color: rgba(255,255,255,.58); margin-bottom: 9px; transition: color .2s; }
+    .f-link:hover { color: white; }
+    .footer-btm { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .footer-copy { font-size: 13px; }
+    .footer-legal { display: flex; gap: 18px; }
+    .footer-legal a { font-size: 13px; color: rgba(255,255,255,.45); transition: color .2s; }
+    .footer-legal a:hover { color: white; }
+
+    /* ── NOTIFY ── */
+    .notify {
+      position: fixed; bottom: 24px; right: 24px;
+      background: white; border-radius: 16px;
+      padding: 15px 18px; box-shadow: 0 8px 32px rgba(0,0,0,.14);
+      display: flex; align-items: center; gap: 12px;
+      z-index: 500; transform: translateX(130%);
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+      max-width: 310px;
+    }
+    .notify.show { transform: none; }
+    .notify-icon { font-size: 24px; }
+    .notify-title { font-size: 14px; font-weight: 700; }
+    .notify-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1080px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .tg-block { grid-template-columns: 1fr; }
+      .tg-phone { display: none; }
+      .contacts-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media(max-width:768px) {
+      .hd-contacts { display: none; }
+      .hero { padding: 44px 20px 60px; }
+      .section { padding: 60px 20px; }
+      .tg-block { padding: 36px 24px; }
+      .cf { padding: 24px; }
+      .footer-top { grid-template-columns: 1fr; gap: 30px; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .step-conn { display: none; }
+    }
+    @media(max-width:500px) {
+      .logo span.lt { display: none; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .search-ph { padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">✈️</div>
+      <span>Travel<em>AI</em></span>
+    </a>
+
+    <nav class="hd-contacts">
+      <a href="tel:+74951234567" class="hd-item">
+        <div class="hd-ic ic-phone">📞</div>
+        +7 (495) 123-45-67
+      </a>
+      <div class="hd-sep"></div>
+      <a href="https://wa.me/74951234567" class="hd-item">
+        <div class="hd-ic ic-wa">💬</div>
+        WhatsApp
+      </a>
+      <div class="hd-sep"></div>
+      <a href="https://t.me/travelai_manager" class="hd-item">
+        <div class="hd-ic ic-tg">✈</div>
+        Telegram
+      </a>
+      <div class="hd-sep"></div>
+      <div class="hd-item">
+        <div class="hd-ic ic-time">🕐</div>
+        Пн–Вс 9:00–21:00
+      </div>
+    </nav>
+
+    <div class="hd-actions">
+      <a href="https://t.me/travelai_bot" class="btn-hot">
+        🔥 Самые горящие туры здесь
+      </a>
+      <a href="https://t.me/travelai_bot" class="btn-bot-link">
+        🤖 Telegram-бот для подбора туров
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ TRUST BAR ══════════ -->
+<div class="trust-bar">
+  <div class="trust-bar-in">
+    <div class="t-item"><span class="t-check">✓</span> Реестр туроператоров РТО 000123</div>
+    <div class="t-item"><span class="t-check">✓</span> Работаем с 2012 года</div>
+    <div class="t-item"><span class="t-check">✓</span> 15 000+ довольных клиентов</div>
+    <div class="t-item"><span class="t-check">✓</span> Страхование ответственности</div>
+    <div class="t-item"><span class="t-check">✓</span> Лучшая цена гарантирована</div>
+  </div>
+</div>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+
+    <div class="hero-left">
+      <div class="hero-badge">🤖 Технологии ИИ в туризме · Новое поколение</div>
+      <h1 class="hero-title">
+        ✈️ Подберите<br>
+        <span class="accent">идеальный отдых</span><br>
+        с помощью ИИ
+      </h1>
+      <p class="hero-sub">
+        Хотите подобрать тур самостоятельно? Ответьте на несколько вопросов,
+        и искусственный интеллект поможет подобрать направление, курорт
+        и отель под ваш бюджет всего за <strong>1 минуту</strong>.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-val">15 000+</div>
+          <div class="stat-lbl">довольных туристов</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">200+</div>
+          <div class="stat-lbl">направлений</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">1 мин</div>
+          <div class="stat-lbl">на подбор тура</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">4.9 ★</div>
+          <div class="stat-lbl">средний рейтинг</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AI CHAT WIDGET ── -->
+    <div class="ai-chat" id="ai-chat">
+      <div class="chat-hd">
+        <div class="chat-av">🤖</div>
+        <div class="chat-hd-info">
+          <div class="chat-hd-name">ИИ-помощник TravelAI</div>
+          <div class="chat-hd-status"><div class="status-dot"></div> Онлайн · отвечает мгновенно</div>
+        </div>
+      </div>
+
+      <div class="chat-msgs" id="chat-msgs"></div>
+      <div class="chat-opts" id="chat-opts"></div>
+
+      <!-- text input -->
+      <div class="chat-inp-row" id="row-text" style="display:none">
+        <input class="chat-inp" id="inp-text" type="text" placeholder="Напишите ответ…" />
+        <button class="chat-send-btn" onclick="sendText()">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+
+      <!-- select input -->
+      <div class="chat-inp-row" id="row-sel" style="display:none">
+        <select class="chat-sel" id="inp-sel"></select>
+        <button class="chat-send-btn" onclick="sendSel()">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+
+      <!-- date input -->
+      <div class="chat-inp-row" id="row-date" style="display:none">
+        <input class="chat-date" id="inp-date" type="date" />
+        <button class="chat-send-btn" onclick="sendDate()">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+
+      <div class="chat-cta" id="chat-cta" style="display:none">
+        <button class="chat-cta-btn" onclick="openModal()">
+          📋 Получить подборку туров
+        </button>
+      </div>
+    </div>
+    <!-- /AI CHAT -->
+
+  </div>
+</section>
+
+<!-- ══════════ SEARCH ══════════ -->
+<section class="search-block" id="search">
+  <div class="container">
+    <div class="sec-label">🔍 Классический поиск</div>
+    <h2 class="sec-title">Или воспользуйтесь классическим поиском туров</h2>
+    <p class="sec-sub">Используйте удобный поиск по всем туроператорам России в реальном времени</p>
+
+    <div class="search-frame">
+      <!--
+        ИНТЕГРАЦИЯ ПОИСКОВОГО МОДУЛЯ:
+        Замените этот блок на iframe:
+        <iframe src="https://YOUR_SEARCH_ENGINE/widget" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
+
+        Поддерживаемые движки:
+        • Sletat.ru widget
+        • Travelata API widget
+        • Level.Travel iframe
+        • Собственный поисковый модуль через API туроператоров
+      -->
+      <div class="search-ph">
+        <div class="search-ph-icon">🔍</div>
+        <h3>Поисковый модуль туров</h3>
+        <p>Здесь будет размещён поисковый iframe. Поддерживается интеграция со Sletat, Travelata, Level.Travel или собственным поисковым движком через API туроператоров.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ WHY US ══════════ -->
+<section class="section section-white" id="why">
+  <div class="container">
+    <div class="sec-label">💎 Преимущества</div>
+    <h2 class="sec-title">Почему выбирают нас</h2>
+    <p class="sec-sub">Мы объединили живую экспертизу менеджеров и возможности ИИ, чтобы вы получили идеальный отдых</p>
+
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-ic">🤖</div>
+        <div class="feat-title">ИИ-подбор за 1 минуту</div>
+        <div class="feat-desc">Алгоритм анализирует тысячи предложений и мгновенно находит лучшие варианты под ваш бюджет и предпочтения.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic">💰</div>
+        <div class="feat-title">Лучшая цена гарантирована</div>
+        <div class="feat-desc">Работаем напрямую с туроператорами без наценок агрегаторов. Найдёте дешевле — вернём разницу.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic">🛡️</div>
+        <div class="feat-title">Безопасное бронирование</div>
+        <div class="feat-desc">Все туроператоры в реестре. Деньги защищены страхованием ответственности туроператора.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic">📱</div>
+        <div class="feat-title">Поддержка 24/7</div>
+        <div class="feat-desc">Менеджеры на связи в WhatsApp и Telegram. ИИ-бот отвечает мгновенно в нерабочие часы.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic">✈️</div>
+        <div class="feat-title">Вылеты из 50+ городов</div>
+        <div class="feat-desc">Подбираем туры из всех крупных городов России со всеми авиакомпаниями по выгодным тарифам.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic">⭐</div>
+        <div class="feat-title">Реальные отзывы</div>
+        <div class="feat-desc">Только проверенные отзывы реальных туристов с фотографиями. Никакой рекламы и заказных оценок.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ HOW IT WORKS ══════════ -->
+<section class="section section-blue" id="how">
+  <div class="container">
+    <div class="sec-label">📋 Процесс</div>
+    <h2 class="sec-title">Как проходит онлайн-бронирование</h2>
+    <p class="sec-sub">От первого запроса до вылета — 4 простых шага</p>
+
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1 <div class="step-conn"></div></div>
+        <div class="step-em">🤖</div>
+        <div class="step-title">Общаетесь с ИИ</div>
+        <div class="step-desc">Отвечаете на вопросы ИИ-помощника о бюджете, датах и предпочтениях</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2 <div class="step-conn"></div></div>
+        <div class="step-em">📋</div>
+        <div class="step-title">Получаете подборку</div>
+        <div class="step-desc">В течение 15 минут менеджер отправляет персональную подборку туров</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3 <div class="step-conn"></div></div>
+        <div class="step-em">✅</div>
+        <div class="step-title">Выбираете и платите</div>
+        <div class="step-desc">Выбираете понравившийся вариант и оплачиваете онлайн или по реквизитам</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-em">✈️</div>
+        <div class="step-title">Летите отдыхать!</div>
+        <div class="step-desc">Получаете все документы на почту и отправляетесь в путешествие</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TELEGRAM BOT ══════════ -->
+<section class="section section-white" id="bot">
+  <div class="tg-wrap">
+    <div class="tg-block">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);color:white;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:600;margin-bottom:18px;">🤖 Telegram-бот</div>
+        <h2 class="tg-title">Подберите тур прямо<br>в Telegram</h2>
+        <p class="tg-sub">Наш умный бот работает 24/7 и поможет подобрать идеальный отдых даже ночью. Просто напишите, куда хотите — бот сделает всё остальное.</p>
+        <div class="tg-feats">
+          <div class="tg-f"><div class="tg-f-dot">✓</div> Мгновенные ответы в любое время суток</div>
+          <div class="tg-f"><div class="tg-f-dot">✓</div> Персональные рекомендации на основе ИИ</div>
+          <div class="tg-f"><div class="tg-f-dot">✓</div> Уведомления о горящих турах</div>
+          <div class="tg-f"><div class="tg-f-dot">✓</div> История всех ваших запросов и бронирований</div>
+        </div>
+        <a href="https://t.me/travelai_bot" class="btn-tg">
+          <span style="font-size:20px">✈</span> Открыть бота в Telegram
+        </a>
+      </div>
+
+      <div>
+        <div class="tg-phone">
+          <div class="ph-top">
+            <span style="color:white;font-size:15px;">‹</span>
+            <div class="ph-av">🤖</div>
+            <div>
+              <div class="ph-name">TravelAI Bot</div>
+              <div class="ph-online">онлайн</div>
+            </div>
+          </div>
+          <div class="ph-msgs">
+            <div class="pm pm-ai">👋 Привет! Куда хочешь полететь?</div>
+            <div class="pm pm-u">В Турцию на 10 дней</div>
+            <div class="pm pm-ai">Сколько человек и бюджет? 😊</div>
+            <div class="pm pm-u">2 взрослых, до 200к</div>
+            <div class="pm pm-ai">Подбираю варианты… 🔍</div>
+            <div class="pm pm-ai">Нашёл 3 отеля 5★ UAI 🏨</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ HOT TOURS ══════════ -->
+<section class="section section-blue" id="tours">
+  <div class="container">
+    <div class="sec-label orange">🔥 Горящие предложения</div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div>
+        <h2 class="sec-title">Горящие туры</h2>
+        <p class="sec-sub">Лучшие предложения со скидками до 40% — только сегодня</p>
+      </div>
+      <a href="#" class="btn btn-outline btn-sm">Все горящие туры →</a>
+    </div>
+
+    <div class="tours-grid">
+      <div class="tour-card">
+        <div class="tour-img" style="background:linear-gradient(135deg,#E3F2FD,#90CAF9);">
+          <div class="tour-img-em">🏖️</div>
+          <div class="tour-badge">−35%</div>
+          <div class="tour-stars">★ 5.0 UAI</div>
+        </div>
+        <div class="tour-body">
+          <div class="tour-cntry">🇹🇷 Турция · Анталья</div>
+          <div class="tour-name">Rixos Premium Belek</div>
+          <div class="tour-tags">
+            <span class="tour-tag">✈ Из Москвы</span>
+            <span class="tour-tag">📅 12 ночей</span>
+            <span class="tour-tag">👫 2 взрослых</span>
+          </div>
+          <div class="tour-ft">
+            <div><div class="tour-from">от</div><div class="tour-price">189 900 <small>₽</small></div></div>
+            <button class="btn btn-primary btn-sm" onclick="openModal()">Забронировать</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tour-card">
+        <div class="tour-img" style="background:linear-gradient(135deg,#FFF8E1,#FFE082);">
+          <div class="tour-img-em">🏜️</div>
+          <div class="tour-badge">−28%</div>
+          <div class="tour-stars">★ 4.9 AI</div>
+        </div>
+        <div class="tour-body">
+          <div class="tour-cntry">🇪🇬 Египет · Хургада</div>
+          <div class="tour-name">Titanic Palace Resort</div>
+          <div class="tour-tags">
+            <span class="tour-tag">✈ Из СПб</span>
+            <span class="tour-tag">📅 9 ночей</span>
+            <span class="tour-tag">👫 2 взрослых</span>
+          </div>
+          <div class="tour-ft">
+            <div><div class="tour-from">от</div><div class="tour-price">124 500 <small>₽</small></div></div>
+            <button class="btn btn-primary btn-sm" onclick="openModal()">Забронировать</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tour-card">
+        <div class="tour-img" style="background:linear-gradient(135deg,#E8F5E9,#A5D6A7);">
+          <div class="tour-img-em">🌴</div>
+          <div class="tour-badge">−40%</div>
+          <div class="tour-stars">★ 5.0 UAI</div>
+        </div>
+        <div class="tour-body">
+          <div class="tour-cntry">🇹🇭 Таиланд · Пхукет</div>
+          <div class="tour-name">Anantara Layan Phuket</div>
+          <div class="tour-tags">
+            <span class="tour-tag">✈ Из Москвы</span>
+            <span class="tour-tag">📅 14 ночей</span>
+            <span class="tour-tag">👫 2 взрослых</span>
+          </div>
+          <div class="tour-ft">
+            <div><div class="tour-from">от</div><div class="tour-price">298 000 <small>₽</small></div></div>
+            <button class="btn btn-primary btn-sm" onclick="openModal()">Забронировать</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tour-card">
+        <div class="tour-img" style="background:linear-gradient(135deg,#FCE4EC,#F48FB1);">
+          <div class="tour-img-em">🏝️</div>
+          <div class="tour-badge">−22%</div>
+          <div class="tour-stars">★ 4.8 BB</div>
+        </div>
+        <div class="tour-body">
+          <div class="tour-cntry">🇦🇪 ОАЭ · Дубай</div>
+          <div class="tour-name">Atlantis The Palm</div>
+          <div class="tour-tags">
+            <span class="tour-tag">✈ Из Казани</span>
+            <span class="tour-tag">📅 7 ночей</span>
+            <span class="tour-tag">👫 2 взрослых</span>
+          </div>
+          <div class="tour-ft">
+            <div><div class="tour-from">от</div><div class="tour-price">245 000 <small>₽</small></div></div>
+            <button class="btn btn-primary btn-sm" onclick="openModal()">Забронировать</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ DESTINATIONS ══════════ -->
+<section class="section section-white" id="destinations">
+  <div class="container">
+    <div class="sec-label">🌍 Направления</div>
+    <h2 class="sec-title">Популярные направления</h2>
+    <p class="sec-sub">Самые востребованные страны среди наших туристов в этом сезоне</p>
+
+    <div class="dest-grid">
+      <div class="dest-card" style="background:linear-gradient(160deg,#E3F2FD,#90CAF9)" onclick="openModal()">
+        <div class="dest-ov"></div><span>🇹🇷</span>
+        <div class="dest-info"><div class="dest-name">Турция</div><div class="dest-price">от 85 000 ₽</div></div>
+      </div>
+      <div class="dest-card" style="background:linear-gradient(160deg,#FFF8E1,#FFE082)" onclick="openModal()">
+        <div class="dest-ov"></div><span>🇪🇬</span>
+        <div class="dest-info"><div class="dest-name">Египет</div><div class="dest-price">от 65 000 ₽</div></div>
+      </div>
+      <div class="dest-card" style="background:linear-gradient(160deg,#E8F5E9,#A5D6A7)" onclick="openModal()">
+        <div class="dest-ov"></div><span>🇹🇭</span>
+        <div class="dest-info"><div class="dest-name">Таиланд</div><div class="dest-price">от 145 000 ₽</div></div>
+      </div>
+      <div class="dest-card" style="background:linear-gradient(160deg,#FCE4EC,#F48FB1)" onclick="openModal()">
+        <div class="dest-ov"></div><span>🇦🇪</span>
+        <div class="dest-info"><div class="dest-name">ОАЭ</div><div class="dest-price">от 120 000 ₽</div></div>
+      </div>
+      <div class="dest-card" style="background:linear-gradient(160deg,#F3E5F5,#CE93D8)" onclick="openModal()">
+        <div class="dest-ov"></div><span>🇲🇻</span>
+        <div class="dest-info"><div class="dest-name">Мальдивы</div><div class="dest-price">от 280 000 ₽</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ REVIEWS ══════════ -->
+<section class="section section-blue" id="reviews">
+  <div class="container">
+    <div class="sec-label green">⭐ Отзывы</div>
+    <h2 class="sec-title">Что говорят наши туристы</h2>
+    <p class="sec-sub">Реальные отзывы от наших клиентов — без редактуры и фильтров</p>
+
+    <div class="rev-grid">
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <div class="rev-text">«Воспользовалась ИИ-подбором первый раз и была приятно удивлена! За 5 минут диалога бот предложил 3 отличных варианта по Турции. Итог — поехали в Rixos, остались в восторге!»</div>
+        <div class="rev-author">
+          <div class="rev-av">👩</div>
+          <div><div class="rev-name">Анастасия К.</div><div class="rev-meta">Турция, Белек · Июль 2025</div></div>
+        </div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <div class="rev-text">«Бронировал тур с семьёй из 4 человек. ИИ учёл возраст детей (3 и 7 лет) и порекомендовал отели с отличной анимацией. Дети были в восторге, жена тоже!»</div>
+        <div class="rev-author">
+          <div class="rev-av">👨</div>
+          <div><div class="rev-name">Дмитрий В.</div><div class="rev-meta">Египет, Шарм-эль-Шейх · Август 2025</div></div>
+        </div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <div class="rev-text">«Впервые летела в Таиланд и очень боялась ошибиться с отелем. ИИ-помощник подробно объяснил разницу между районами. Всё совпало с ожиданиями на 100%!»</div>
+        <div class="rev-author">
+          <div class="rev-av">👩</div>
+          <div><div class="rev-name">Мария Л.</div><div class="rev-meta">Таиланд, Пхукет · Сентябрь 2025</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FAQ ══════════ -->
+<section class="section section-white" id="faq">
+  <div class="container">
+    <div class="sec-label">❓ FAQ</div>
+    <h2 class="sec-title">Частые вопросы</h2>
+    <p class="sec-sub">Ответы на самые частые вопросы наших клиентов</p>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Как работает ИИ-подбор туров? <div class="faq-ic">+</div></div>
+        <div class="faq-a">Вы отвечаете на несколько вопросов в чате: бюджет, даты, количество туристов, тип отдыха и предпочтения. ИИ анализирует тысячи предложений от туроператоров и формирует персональную подборку. Менеджер проверяет результат и отправляет вам финальный список с ценами в WhatsApp или Telegram.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Сколько стоит подбор тура? <div class="faq-ic">+</div></div>
+        <div class="faq-a">Подбор и консультация — абсолютно бесплатно. Вы платите только за сам тур по ценам туроператоров. Мы не добавляем никаких скрытых наценок — наша комиссия уже включена в стоимость тура туроператором.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Безопасно ли бронировать туры онлайн? <div class="faq-ic">+</div></div>
+        <div class="faq-a">Да, полностью безопасно. Мы работаем только с аккредитованными туроператорами, внесёнными в Единый федеральный реестр. Все туры застрахованы. Вы получаете официальный договор и все документы. Оплата проводится через защищённые платёжные системы.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Из каких городов вы оформляете туры? <div class="faq-ic">+</div></div>
+        <div class="faq-a">Мы подбираем туры из всех крупных городов России: Москва, Санкт-Петербург, Казань, Екатеринбург, Новосибирск, Краснодар, Ростов-на-Дону, Уфа, Самара, Пермь и многих других — более 50 городов вылета.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Что если я хочу изменить или отменить тур? <div class="faq-ic">+</div></div>
+        <div class="faq-a">Условия изменения и отмены зависят от туроператора и тарифа. Наши менеджеры помогут разобраться в условиях до бронирования и подберут тариф с максимальной гибкостью. Если возникнет необходимость — мы будем сопровождать вас на каждом шаге.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Как быстро я получу подборку туров? <div class="faq-ic">+</div></div>
+        <div class="faq-a">После заполнения формы ИИ формирует предварительную подборку мгновенно. Менеджер проверяет актуальность цен и отправляет финальную подборку в течение 15–30 минут в рабочее время. В нерабочее время подборка придёт утром следующего дня.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACTS ══════════ -->
+<section class="section section-blue" id="contacts">
+  <div class="container">
+    <div class="sec-label">📍 Контакты</div>
+    <h2 class="sec-title">Свяжитесь с нами</h2>
+    <p class="sec-sub">Мы онлайн с 9:00 до 21:00, ИИ-бот доступен 24/7</p>
+
+    <div class="contacts-grid">
+      <div class="contacts-list">
+        <div class="cc"><div class="cc-ic">📞</div><div><div class="cc-lbl">Телефон</div><div class="cc-val">+7 (495) 123-45-67</div></div></div>
+        <div class="cc"><div class="cc-ic">💬</div><div><div class="cc-lbl">WhatsApp</div><div class="cc-val">+7 (495) 123-45-67</div></div></div>
+        <div class="cc"><div class="cc-ic">✈</div><div><div class="cc-lbl">Telegram</div><div class="cc-val">@travelai_manager</div></div></div>
+        <div class="cc"><div class="cc-ic">📧</div><div><div class="cc-lbl">Email</div><div class="cc-val">info@travelai.ru</div></div></div>
+        <div class="cc"><div class="cc-ic">🕐</div><div><div class="cc-lbl">Режим работы</div><div class="cc-val">Пн–Вс, 9:00–21:00</div></div></div>
+        <div class="cc"><div class="cc-ic">📍</div><div><div class="cc-lbl">Адрес</div><div class="cc-val">Москва, ул. Тверская, 1</div></div></div>
+      </div>
+
+      <div class="cf">
+        <h3>Оставить заявку</h3>
+        <p>Заполните форму и мы свяжемся с вами в ближайшее время</p>
+        <div class="fg"><label class="fl">Ваше имя</label><input type="text" class="fi" placeholder="Как вас зовут?" /></div>
+        <div class="fg"><label class="fl">Телефон</label><input type="tel" class="fi" placeholder="+7 (___) ___-__-__" /></div>
+        <div class="fg">
+          <label class="fl">Удобный способ связи</label>
+          <div class="fm">
+            <button class="fmo active" onclick="this.classList.toggle('active')">💬 WhatsApp</button>
+            <button class="fmo" onclick="this.classList.toggle('active')">✈ Telegram</button>
+            <button class="fmo" onclick="this.classList.toggle('active')">📞 Звонок</button>
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Пожелания</label><textarea class="fta" placeholder="Куда хотите поехать, бюджет, даты…"></textarea></div>
+        <button class="btn btn-primary" style="width:100%" onclick="submitContact()">Отправить заявку</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+  <div class="footer-in">
+    <div class="footer-top">
+      <div>
+        <div class="f-logo"><div class="f-logo-ic">✈️</div> Travel<span style="color:#64B5F6">AI</span></div>
+        <div class="f-desc">Турагентство нового поколения. Подбираем идеальный отдых с помощью искусственного интеллекта и живой экспертизы менеджеров.</div>
+      </div>
+      <div class="f-col">
+        <h4>Направления</h4>
+        <a href="#" class="f-link">Турция</a>
+        <a href="#" class="f-link">Египет</a>
+        <a href="#" class="f-link">Таиланд</a>
+        <a href="#" class="f-link">ОАЭ</a>
+        <a href="#" class="f-link">Мальдивы</a>
+        <a href="#" class="f-link">Все страны</a>
+      </div>
+      <div class="f-col">
+        <h4>Клиентам</h4>
+        <a href="#why" class="f-link">Почему мы</a>
+        <a href="#how" class="f-link">Как работаем</a>
+        <a href="#reviews" class="f-link">Отзывы</a>
+        <a href="#faq" class="f-link">FAQ</a>
+        <a href="#contacts" class="f-link">Контакты</a>
+      </div>
+      <div class="f-col">
+        <h4>Контакты</h4>
+        <a href="tel:+74951234567" class="f-link">+7 (495) 123-45-67</a>
+        <a href="mailto:info@travelai.ru" class="f-link">info@travelai.ru</a>
+        <a href="https://t.me/travelai_bot" class="f-link">Telegram-бот</a>
+        <a href="https://wa.me/74951234567" class="f-link">WhatsApp</a>
+        <span class="f-link" style="cursor:default">Пн–Вс 9:00–21:00</span>
+      </div>
+    </div>
+    <div class="footer-btm">
+      <div class="footer-copy">© 2025 TravelAI. Все права защищены. РТО 000123</div>
+      <div class="footer-legal">
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#">Оферта</a>
+        <a href="#">Реквизиты</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════ LEAD MODAL ══════════ -->
+<div class="modal-ov" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h3>📋 Получить подборку туров</h3>
+    <p>Оставьте контакты — менеджер отправит персональную подборку в течение 15 минут</p>
+    <div class="fg"><label class="fl">Ваше имя *</label><input type="text" class="fi" id="m-name" placeholder="Как вас зовут?" /></div>
+    <div class="fg"><label class="fl">Телефон *</label><input type="tel" class="fi" id="m-phone" placeholder="+7 (___) ___-__-__" /></div>
+    <div class="fg">
+      <label class="fl">Удобный способ получения подборки</label>
+      <div class="fm">
+        <button class="fmo active" onclick="this.classList.toggle('active')">💬 WhatsApp</button>
+        <button class="fmo" onclick="this.classList.toggle('active')">✈ Telegram</button>
+        <button class="fmo" onclick="this.classList.toggle('active')">📱 MAX</button>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="submitLead()">Получить подборку →</button>
+    <div style="font-size:12px;color:#9CA3AF;text-align:center;margin-top:10px;">
+      Нажимая кнопку, вы соглашаетесь с <a href="#" style="color:var(--blue)">политикой конфиденциальности</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ NOTIFICATION ══════════ -->
+<div class="notify" id="notify">
+  <div class="notify-icon">✅</div>
+  <div>
+    <div class="notify-title" id="n-title">Заявка отправлена!</div>
+    <div class="notify-sub" id="n-sub">Менеджер свяжется с вами в течение 15 минут</div>
+  </div>
+</div>
+
+<!-- ══════════ SCRIPT ══════════ -->
+<script>
+/*
+ * TravelAI — AI Chat Engine
+ * ─────────────────────────────────────────────────────────────────────────
+ * Архитектура спроектирована для подключения:
+ *   • OpenAI API / собственного ИИ  → заменить функцию aiReply()
+ *   • CRM (AmoCRM, Bitrix24)         → в функции submitLead()
+ *   • Telegram Bot API               → в функции submitLead()
+ *   • База отелей / API туроператоров → в функции showResult()
+ * ─────────────────────────────────────────────────────────────────────────
+ */
+
+// ── ГОРОДА ВЫЛЕТОВ ──────────────────────────────────────────────────────
+const CITIES = [
+  'Москва','Санкт-Петербург','Новосибирск','Екатеринбург','Казань',
+  'Нижний Новгород','Челябинск','Самара','Уфа','Ростов-на-Дону',
+  'Краснодар','Омск','Красноярск','Воронеж','Пермь',
+  'Волгоград','Саратов','Тюмень','Тольятти','Ижевск',
+  'Барнаул','Ульяновск','Иркутск','Хабаровск','Владивосток',
+  'Ярославль','Махачкала','Томск','Оренбург','Кемерово',
+  'Новокузнецк','Рязань','Астрахань','Пенза','Липецк',
+  'Тула','Калининград','Сочи','Минеральные Воды','Симферополь',
+  'Нальчик','Владикавказ','Грозный','Мурманск','Архангельск',
+  'Якутск','Магадан','Южно-Сахалинск','Петропавловск-Камчатский','Чита'
+];
+
+// ── СЦЕНАРИЙ ДИАЛОГА ────────────────────────────────────────────────────
+const STEPS = [
+  {
+    key: 'guests',
+    q: 'Привет! 👋\nЯ помогу подобрать идеальный отдых.\n\nСколько человек планирует поездку?',
+    type: 'opts',
+    opts: ['1 человек', '2 человека', '3–4 человека', '5 и более']
+  },
+  {
+    key: 'budget',
+    q: 'Какой примерный бюджет на поездку?\n(на всех, включая перелёт)',
+    type: 'opts',
+    opts: ['до 80 000 ₽', '80–150 000 ₽', '150–250 000 ₽', 'более 250 000 ₽']
+  },
+  {
+    key: 'date',
+    q: 'Когда планируете вылететь?\nВыберите примерную дату отправления:',
+    type: 'date'
+  },
+  {
+    key: 'duration',
+    q: 'На сколько дней планируете отдых?',
+    type: 'opts',
+    opts: ['3–5 дней', '7 дней', '10–14 дней', 'более 14 дней']
+  },
+  {
+    key: 'rest_type',
+    q: 'Какой тип отдыха предпочитаете?',
+    type: 'opts',
+    opts: ['🏖 Пляжный', '🏛 Экскурсионный', '🌿 Активный / Природа', '🎭 Смешанный']
+  },
+  {
+    key: 'children',
+    q: 'Поедут ли с вами дети?',
+    type: 'opts',
+    opts: ['Нет детей', 'Да, есть дети']
+  },
+  {
+    key: 'country',
+    q: 'Есть предпочтения по стране или направлению?',
+    type: 'opts',
+    opts: ['Турция', 'Египет', 'ОАЭ / Таиланд', '🤖 Пусть ИИ выберет лучший вариант']
+  },
+  {
+    key: 'city',
+    q: 'Из какого города планируете вылет?',
+    type: 'select',
+    opts: CITIES
+  },
+  {
+    key: 'hotel',
+    q: 'Какие требования к отелю?',
+    type: 'opts',
+    opts: ['3★ — комфорт и цена', '4★ — хороший сервис', '5★ UAI — всё включено', '5★ — люкс / премиум']
+  }
+];
+
+const state = { step: 0, answers: {}, waitChild: false };
+
+// ── INIT ────────────────────────────────────────────────────────────────
+function initChat() {
+  document.getElementById('chat-msgs').innerHTML = '';
+  state.step = 0;
+  state.answers = {};
+  state.waitChild = false;
+  nextStep(0);
+}
+
+function nextStep(i) {
+  const step = STEPS[i];
+  if (!step) { showResult(); return; }
+
+  aiSay(step.q, () => {
+    if (step.type === 'opts')   showOpts(step.opts, v => pick(i, v));
+    if (step.type === 'date')   showDate();
+    if (step.type === 'select') showSel(step.opts);
+    if (step.type === 'text')   showText();
+  });
+}
+
+function pick(i, val) {
+  const step = STEPS[i];
+  state.answers[step.key] = val;
+  userSay(val);
+  clearInputs();
+
+  if (step.key === 'children' && val === 'Да, есть дети') {
+    state.waitChild = true;
+    setTimeout(() => {
+      aiSay('Сколько детей и какой возраст?\n(например: «2 детей, 4 и 7 лет»)', showText);
+    }, 400);
+    return;
+  }
+
+  state.step = i + 1;
+  setTimeout(() => nextStep(state.step), 400);
+}
+
+// ── AI MESSAGE ───────────────────────────────────────────────────────────
+function aiSay(text, cb) {
+  const box = document.getElementById('chat-msgs');
+  const t = document.createElement('div');
+  t.className = 'msg msg-ai';
+  t.innerHTML = '<div class="msg-ic">🤖</div><div class="msg-bbl typing-bbl"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  box.appendChild(t);
+  box.scrollTop = box.scrollHeight;
+  setTimeout(() => {
+    t.remove();
+    const m = document.createElement('div');
+    m.className = 'msg msg-ai';
+    m.innerHTML = `<div class="msg-ic">🤖</div><div class="msg-bbl">${text.replace(/\n/g,'<br>')}</div>`;
+    box.appendChild(m);
+    box.scrollTop = box.scrollHeight;
+    if (cb) cb();
+  }, 850);
+}
+
+function userSay(text) {
+  const box = document.getElementById('chat-msgs');
+  const m = document.createElement('div');
+  m.className = 'msg msg-user';
+  m.innerHTML = `<div class="msg-bbl">${text}</div>`;
+  box.appendChild(m);
+  box.scrollTop = box.scrollHeight;
+}
+
+// ── INPUT TYPES ──────────────────────────────────────────────────────────
+function showOpts(opts, onPick) {
+  const wrap = document.getElementById('chat-opts');
+  wrap.innerHTML = '';
+  opts.forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'chat-opt'; b.textContent = o;
+    b.onclick = () => { wrap.innerHTML = ''; onPick(o); };
+    wrap.appendChild(b);
+  });
+}
+
+function showDate() {
+  clearInputs();
+  const d = new Date(); d.setDate(d.getDate() + 3);
+  const inp = document.getElementById('inp-date');
+  inp.min = d.toISOString().split('T')[0];
+  inp.value = '';
+  document.getElementById('row-date').style.display = 'flex';
+}
+
+function sendDate() {
+  const v = document.getElementById('inp-date').value;
+  if (!v) return;
+  const label = new Date(v).toLocaleDateString('ru-RU', {day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('row-date').style.display = 'none';
+  pick(state.step, label);
+}
+
+function showSel(opts) {
+  clearInputs();
+  const sel = document.getElementById('inp-sel');
+  sel.innerHTML = opts.map(o => `<option value="${o}">${o}</option>`).join('');
+  document.getElementById('row-sel').style.display = 'flex';
+}
+
+function sendSel() {
+  const v = document.getElementById('inp-sel').value;
+  document.getElementById('row-sel').style.display = 'none';
+  pick(state.step, v);
+}
+
+function showText() {
+  clearInputs();
+  const inp = document.getElementById('inp-text');
+  inp.value = ''; inp.type = 'text';
+  document.getElementById('row-text').style.display = 'flex';
+  inp.focus();
+}
+
+function sendText() {
+  const v = document.getElementById('inp-text').value.trim();
+  if (!v) return;
+  document.getElementById('inp-text').value = '';
+  document.getElementById('row-text').style.display = 'none';
+
+  if (state.waitChild) {
+    state.waitChild = false;
+    state.answers.children_count = v;
+    userSay(v);
+    state.step = STEPS.findIndex(s => s.key === 'country');
+    setTimeout(() => nextStep(state.step), 400);
+    return;
+  }
+  pick(state.step, v);
+}
+
+document.getElementById('inp-text').addEventListener('keydown', e => { if (e.key === 'Enter') sendText(); });
+
+function clearInputs() {
+  document.getElementById('chat-opts').innerHTML = '';
+  ['row-text','row-sel','row-date'].forEach(id => document.getElementById(id).style.display = 'none');
+}
+
+// ── RESULT ───────────────────────────────────────────────────────────────
+/*
+ * INTEGRATION POINT — OpenAI API:
+ * Замените функцию aiReply() на вызов вашего бэкенда:
+ *
+ * async function aiReply(answers) {
+ *   const res = await fetch('/api/ai-recommend', {
+ *     method: 'POST',
+ *     headers: { 'Content-Type': 'application/json' },
+ *     body: JSON.stringify({ answers })
+ *   });
+ *   const data = await res.json();
+ *   return data.text;
+ * }
+ *
+ * Бэкенд передаёт answers в OpenAI API (GPT-4o) или собственный LLM
+ * и возвращает персональную рекомендацию.
+ */
+function showResult() {
+  const a = state.answers;
+  const budget = a.budget || '';
+  let rec = '';
+
+  if (budget.includes('до 80'))       rec = 'отличный выбор — <strong>Египет (Хургада, Шарм)</strong> и <strong>Турция (Алания, Кемер)</strong>. В бюджете доступны комфортные отели 4★ UAI.';
+  else if (budget.includes('80–150')) rec = 'рекомендую рассмотреть <strong>Турцию (Анталья, Белек)</strong> с отелями 5★ UAI или <strong>Египет</strong> для расслабленного пляжного отдыха.';
+  else if (budget.includes('150–250'))rec = 'доступны <strong>премиальные отели 5★ UAI в Турции</strong>, <strong>Таиланд (Пхукет)</strong> и <strong>ОАЭ (Дубай)</strong> с высоким уровнем сервиса.';
+  else rec = 'открыты <strong>Мальдивы</strong>, <strong>Бали</strong>, <strong>ОАЭ 5★ люкс</strong> и другие эксклюзивные направления.';
+
+  const country = a.country && !a.country.includes('ИИ') ? `<br>Направление: <strong>${a.country}</strong>.` : '';
+  const hotel   = a.hotel ? ` Под категорию «${a.hotel}»` : '';
+
+  const txt = `Отлично! Я собрал всю информацию 📋\n\nДля вашего бюджета ${rec}${country}${hotel} подберу несколько конкретных отелей с актуальными ценами.\n\nЧтобы получить персональную подборку — оставьте контакты, и менеджер отправит её в течение 15 минут! 👇`;
+
+  aiSay(txt, () => {
+    document.getElementById('chat-cta').style.display = 'block';
+  });
+}
+
+// ── MODAL ────────────────────────────────────────────────────────────────
+function openModal()  { document.getElementById('modal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeModal() { document.getElementById('modal').classList.remove('open'); document.body.style.overflow = ''; }
+function closeModalOutside(e) { if (e.target === document.getElementById('modal')) closeModal(); }
+
+function submitLead() {
+  const name  = document.getElementById('m-name').value.trim();
+  const phone = document.getElementById('m-phone').value.trim();
+  if (!name || !phone) { alert('Пожалуйста, заполните имя и телефон'); return; }
+
+  /*
+   * INTEGRATION POINTS:
+   *
+   * 1. CRM (AmoCRM / Bitrix24):
+   *    fetch('/api/crm/lead', { method:'POST', body: JSON.stringify({ name, phone, answers: state.answers }) })
+   *
+   * 2. Telegram Bot (уведомление менеджеру):
+   *    fetch('/api/telegram/notify', { method:'POST', body: JSON.stringify({ name, phone, answers: state.answers }) })
+   *    Бэкенд вызывает Telegram Bot API: sendMessage(MANAGER_CHAT_ID, text)
+   *
+   * 3. Email (SMTP / SendGrid):
+   *    fetch('/api/email/lead', { method:'POST', body: JSON.stringify({ name, phone }) })
+   */
+
+  closeModal();
+  notify('Подборка туров отправляется! 🎉', 'Менеджер свяжется с вами в течение 15 минут');
+}
+
+function submitContact() {
+  notify('Заявка отправлена!', 'Ожидайте звонка менеджера');
+}
+
+// ── NOTIFY ───────────────────────────────────────────────────────────────
+function notify(title, sub) {
+  document.getElementById('n-title').textContent = title;
+  document.getElementById('n-sub').textContent = sub;
+  const el = document.getElementById('notify');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 4500);
+}
+
+// ── FAQ ──────────────────────────────────────────────────────────────────
+function toggleFaq(hd) {
+  const item = hd.parentElement;
+  const open = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!open) item.classList.add('open');
+}
+
+// ── SMOOTH SCROLL ────────────────────────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+
+// ── INIT ─────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', initChat);
+</script>
+</body>
+</html>
