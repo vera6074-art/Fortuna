@@ -1350,7 +1350,7 @@
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">×</button>
     <h3>📋 Получить подборку туров</h3>
-    <p>Оставь контакты — менеджер отправит персональную подборку в течение 15 минут</p>
+    <p>Оставь контакты — ИИ отправит персональную подборку в течение 15 минут</p>
     <div class="fg"><label class="fl">Твоё имя *</label><input type="text" class="fi" id="m-name" placeholder="Как тебя зовут?" /></div>
     <div class="fg"><label class="fl">Телефон *</label><input type="tel" class="fi" id="m-phone" placeholder="+7 (___) ___-__-__" /></div>
     <div class="fg">
@@ -1362,6 +1362,7 @@
       </div>
     </div>
     <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="submitLead()">Получить подборку →</button>
+    <button class="btn" style="width:100%;margin-top:10px;background:transparent;color:var(--wave-dark);border:1.5px solid var(--wave);border-radius:var(--radius);padding:13px 28px;font-size:15px;" onclick="requestManager()">💬 Хочу пообщаться с менеджером</button>
     <div style="font-size:12px;color:#9CA3AF;text-align:center;margin-top:10px;">
       Нажимая кнопку, ты соглашаешься с <a href="#" style="color:var(--blue)">политикой конфиденциальности</a>
     </div>
@@ -1803,7 +1804,23 @@ function submitLead() {
    */
 
   closeModal();
-  notify('Подборка туров отправляется! 🎉', 'Менеджер свяжется с тобой в течение 15 минут');
+  notify('Подборка туров отправляется! 🎉', 'ИИ пришлёт персональную подборку в течение 15 минут');
+}
+
+// «Хочу пообщаться с менеджером» — передаём заявку живому менеджеру
+function requestManager() {
+  const name  = document.getElementById('m-name').value.trim();
+  const phone = document.getElementById('m-phone').value.trim();
+  if (!phone) { alert('Оставь номер телефона — и менеджер свяжется с тобой'); return; }
+
+  /*
+   * INTEGRATION POINT — передача заявки менеджеру:
+   *   fetch('/api/telegram/notify', { method:'POST',
+   *     body: JSON.stringify({ name, phone, answers: state.answers, type: 'manager' }) })
+   */
+
+  closeModal();
+  notify('Заявка передана менеджеру 👋', 'Менеджер свяжется с тобой в ближайшее время');
 }
 
 function submitContact() {
